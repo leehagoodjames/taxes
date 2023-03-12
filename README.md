@@ -1,6 +1,11 @@
 # taxes
 A lightweight Python Repo for calculating personal income taxes. Contributions are welcome.
 
+## Install
+```
+pip install taxes
+```
+
 ## Example
 ```
 python examples/example.py
