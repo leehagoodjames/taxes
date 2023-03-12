@@ -3,6 +3,7 @@ from taxes.brackets import FederalIncomeTaxBrackets
 from taxes.brackets import GeorgiaStateIncomeTaxBrackets
 from taxes.brackets import SocialSecurityIncomeTaxBrackets
 from taxes.brackets import MedicareIncomeTaxBrackets
+from taxes.Logger import logger
 
 # Load in tax brackets for your year and filing-status.
 federal_taxes = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax
@@ -18,8 +19,8 @@ social_security_tax = social_security_taxes.calculate_taxes(agi)
 medicare_tax = medicare_taxes.calculate_taxes(agi)
 
 # Show the result.
-print(f'adjusted gross income: ${agi:,.0f}')
-print(f'federal tax: ${federal_tax:,.0f}')
-print(f'state tax: ${state_tax:,.0f}')
-print(f'social security tax: ${social_security_tax:,.0f}')
-print(f'medicare tax: ${medicare_tax:,.0f}')
+logger.info(f'adjusted gross income: ${agi:,.0f}')
+logger.info(f'federal tax: ${federal_tax:,.0f}')
+logger.info(f'state tax: ${state_tax:,.0f}')
+logger.info(f'social security tax: ${social_security_tax:,.0f}')
+logger.info(f'medicare tax: ${medicare_tax:,.0f}')
