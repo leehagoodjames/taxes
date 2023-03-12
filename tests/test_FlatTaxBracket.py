@@ -2,7 +2,7 @@
 import unittest
 
 # Local Imports
-import FlatTaxBracket
+from src.taxes import FlatTaxBracket
 
 
 class TestFlatTaxBracket(unittest.TestCase):
