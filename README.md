@@ -3,7 +3,7 @@ A lightweight Python Repo for calculating personal income taxes. Contributions a
 
 ## Install
 ```
-pip install taxes
+pip install personal-taxes
 ```
 
 ## Example
