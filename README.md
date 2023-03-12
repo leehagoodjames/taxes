@@ -1,5 +1,5 @@
 # taxes
-A lightweight Python Repo for calculating personal income taxes
+A lightweight Python Repo for calculating personal income taxes. Contributions are welcome.
 
 ## Example
 ```
