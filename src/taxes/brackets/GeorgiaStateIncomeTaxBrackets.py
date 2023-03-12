@@ -1,6 +1,6 @@
 # Local Imports
-import ProgressiveTax
-import ProgressiveTaxBracket
+from taxes import ProgressiveTax
+from taxes import ProgressiveTaxBracket
 
 
 # 2022 Married Filing Jointly

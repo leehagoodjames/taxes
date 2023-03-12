@@ -1,8 +1,8 @@
-# Local Imports
-from brackets import FederalIncomeTaxBrackets
-from brackets import GeorgiaStateIncomeTaxBrackets
-from brackets import SocialSecurityIncomeTaxBrackets
-from brackets import MedicareIncomeTaxBrackets
+# Third Party Imports
+from taxes.brackets import FederalIncomeTaxBrackets
+from taxes.brackets import GeorgiaStateIncomeTaxBrackets
+from taxes.brackets import SocialSecurityIncomeTaxBrackets
+from taxes.brackets import MedicareIncomeTaxBrackets
 
 # Load in tax brackets for your year and filing-status.
 federal_taxes = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax

@@ -1,16 +1,15 @@
 # Local Imports
-import ProgressiveTaxBracket
+from taxes import RegressiveTaxBracket
 
-class ProgressiveTax:
+class RegressiveTax:
 
-
-    def __init__(self, progressive_tax_bracket: ProgressiveTaxBracket):
-        """Create a ProgressiveTax object.
+    def __init__(self, regressive_tax_bracket: RegressiveTaxBracket):
+        """Create a RegressiveTax object.
 
         Keyword arguments:
-        progressive_tax_bracket -- ProgressiveTaxBracket object
+        regressive_tax_bracket -- RegressiveTaxBracket object
         """
-        self.brackets = progressive_tax_bracket
+        self.brackets = regressive_tax_bracket
         return
 
     def calculate_taxes(self, adjusted_gross_income):
