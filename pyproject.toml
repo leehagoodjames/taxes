@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "taxes"
+version = "0.0.1"
+authors = [
+  { name="Lee James", email="leehagoodjames@gmail.com" },
+]
+description = "A lightweight package for personal income taxes"
+readme = "README.md"
+requires-python = ">=3.3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/leehagoodjames/taxes"
+"Bug Tracker" = "https://github.com/leehagoodjames/taxes/issues"
