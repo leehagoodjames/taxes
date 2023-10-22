@@ -24,3 +24,4 @@ cd taxes
 ```shell
 python3 -m unittest discover tests
 ```
+4. Make awesome changes!
