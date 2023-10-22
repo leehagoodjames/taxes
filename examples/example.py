@@ -1,9 +1,9 @@
 # Third Party Imports
-from taxes.brackets import FederalIncomeTaxBrackets
-from taxes.brackets import GeorgiaStateIncomeTaxBrackets
-from taxes.brackets import SocialSecurityIncomeTaxBrackets
-from taxes.brackets import MedicareIncomeTaxBrackets
-from taxes.Logger import logger
+from easytax.brackets import FederalIncomeTaxBrackets
+from easytax.brackets import GeorgiaStateIncomeTaxBrackets
+from easytax.brackets import SocialSecurityIncomeTaxBrackets
+from easytax.brackets import MedicareIncomeTaxBrackets
+from easytax.Logger import logger
 
 # Load in tax brackets for your year and filing-status.
 federal_taxes = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax

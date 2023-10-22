@@ -1,5 +1,5 @@
 # Local Imports
-from taxes import FlatTaxBracket
+from . import FlatTaxBracket
 
 class FlatTax:
 

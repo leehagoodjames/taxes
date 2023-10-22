@@ -1,6 +1,6 @@
 # Local Imports
-from taxes import ProgressiveTax
-from taxes import ProgressiveTaxBracket
+from .. import ProgressiveTax
+from .. import ProgressiveTaxBracket
 
 
 # 2022 Married Filing Jointly
@@ -16,7 +16,7 @@ married_filing_jointly_2022_tax = ProgressiveTax.ProgressiveTax(
 married_filing_seperately_2022_tax = ProgressiveTax.ProgressiveTax(
     ProgressiveTaxBracket.ProgressiveTaxBracket(
         tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
-        income_thresholds = [10275, 41175, 89075, 170050, 215950, 323925])
+        income_thresholds = [10275, 41775, 89075, 170050, 215950, 323925])
     )
 
 # 2023 Married Filing Jointly

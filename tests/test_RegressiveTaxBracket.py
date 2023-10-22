@@ -2,7 +2,8 @@
 import unittest
 
 # Local Imports
-from src.taxes import RegressiveTaxBracket
+from src.easytax import RegressiveTax
+from src.easytax import RegressiveTaxBracket
 
 
 class TestRegressiveTaxBracket(unittest.TestCase):

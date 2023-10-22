@@ -1,6 +1,6 @@
 # Local Imports
-from taxes import RegressiveTax
-from taxes import RegressiveTaxBracket
+from easytax import RegressiveTax
+from easytax import RegressiveTaxBracket
 
 
 # 2022 Social Security

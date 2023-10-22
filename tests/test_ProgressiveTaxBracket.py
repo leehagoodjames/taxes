@@ -2,7 +2,7 @@
 import unittest
 
 # Local Imports
-from src.taxes import ProgressiveTaxBracket
+from src.easytax import ProgressiveTaxBracket
 
 
 class TestProgressiveTaxBracket(unittest.TestCase):

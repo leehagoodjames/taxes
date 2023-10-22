@@ -2,16 +2,16 @@
 A lightweight Python Repo for calculating personal income taxes. Contributions are welcome.
 
 ## Install
-```
-pip install personal-taxes
+```shell
+python3 -m pip install easytax
 ```
 
 ## Example
-```
-python examples/example.py
+```shell
+python3 examples/example.py
 ```
 
 ## Test
-```
-python -m unittest discover tests
+```shell
+python3 -m unittest discover tests
 ```

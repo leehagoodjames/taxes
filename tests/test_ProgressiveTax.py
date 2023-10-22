@@ -2,8 +2,8 @@
 import unittest
 
 # Local Imports
-from src.taxes import ProgressiveTax
-from src.taxes import ProgressiveTaxBracket
+from src.easytax import ProgressiveTax
+from src.easytax import ProgressiveTaxBracket
 
 
 class TestProgressiveTax(unittest.TestCase):

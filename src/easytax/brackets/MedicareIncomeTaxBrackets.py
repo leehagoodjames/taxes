@@ -1,6 +1,6 @@
 # Local Imports
-from taxes import FlatTax
-from taxes import FlatTaxBracket
+from easytax import FlatTax
+from easytax import FlatTaxBracket
 
 
 # 2022 Medicare Employee Rate
