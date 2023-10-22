@@ -1,17 +1,26 @@
 # taxes
 A lightweight Python Repo for calculating personal income taxes. Contributions are welcome.
 
-## Install
+## Installing
 ```shell
 python3 -m pip install easytax
 ```
 
-## Example
+## Example Usage
 ```shell
 python3 examples/example.py
 ```
 
-## Test
+## Contributing
+1. Clone the [taxes](https://github.com/leehagoodjames/taxes) repo with:
+```shell
+git clone https://github.com/leehagoodjames/taxes.git
+```
+2. Change directories to the project's root with:
+```shell
+cd taxes
+```
+3. Ensure tests pass with:
 ```shell
 python3 -m unittest discover tests
 ```
