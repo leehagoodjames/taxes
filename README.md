@@ -25,3 +25,15 @@ cd taxes
 python3 -m unittest discover tests
 ```
 4. Make awesome changes!
+
+
+## Releasing New Modules
+1. Increment the version in `pyproject.toml`
+2. Build with:
+```shell
+rm -rf dist; python3 -m build
+```
+3. Upload to pypi with:
+```shell
+python3 -m twine upload --repository pypi dist/*
+```

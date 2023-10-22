@@ -2,8 +2,8 @@
 import unittest
 
 # Local Imports
-from src.easytax import FlatTax
-from src.easytax import FlatTaxBracket
+from src.easytax.base import FlatTax
+from src.easytax.base import FlatTaxBracket
 
 
 class TestFlatTax(unittest.TestCase):
