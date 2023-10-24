@@ -1,5 +1,6 @@
 # Third Party Imports
 from easytax.brackets import FederalIncomeTaxBrackets
+from easytax.brackets import FederalLongTermCapitalGainsTaxBrackets
 from easytax.brackets import GeorgiaStateIncomeTaxBrackets
 from easytax.brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
 from easytax.brackets import SocialSecurityIncomeTaxBrackets
@@ -8,15 +9,16 @@ from easytax.utils.Logger import logger
 
 # Load in tax brackets for your year and filing-status.
 federal_taxes = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax
+federal_long_term_capital_gains_taxes = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
 georgia_taxes = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
 georgia_capital_gains_taxes = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
 social_security_taxes = SocialSecurityIncomeTaxBrackets.social_security_employee_2022_tax
 medicare_taxes = MedicareIncomeTaxBrackets.medicare_employee_2022_tax
 
 # Compute the taxes.
-agi = 100000 # Includes short term capital gains
-long_term_capital_gains = 10000
-federal_tax = federal_taxes.calculate_taxes(agi)
+agi = 200000 # Includes short term capital gains
+long_term_capital_gains = 100000
+federal_tax = federal_taxes.calculate_taxes(agi) + federal_long_term_capital_gains_taxes.calculate_taxes(long_term_capital_gains)
 state_tax = georgia_taxes.calculate_taxes(agi) + georgia_capital_gains_taxes.calculate_taxes(long_term_capital_gains)
 social_security_tax = social_security_taxes.calculate_taxes(agi)
 medicare_tax = medicare_taxes.calculate_taxes(agi)
