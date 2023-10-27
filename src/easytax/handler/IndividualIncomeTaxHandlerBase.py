@@ -1,6 +1,6 @@
 
 # Local Imports
-from easytax.utils.Logger import logger
+from ..utils.Logger import logger
 
 
 # Each handler can have its own AGI / MAGI

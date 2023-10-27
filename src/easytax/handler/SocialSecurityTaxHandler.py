@@ -1,6 +1,6 @@
 
 # Local Imports
-from easytax.brackets import SocialSecurityIncomeTaxBrackets
+from ..brackets import SocialSecurityIncomeTaxBrackets
 from .IndividualIncomeTaxHandlerBase import IndividualIncomeTaxHandlerBase
 
 

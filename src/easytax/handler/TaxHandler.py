@@ -4,7 +4,7 @@ from .FederalTaxHandler import FederalTaxHandler
 from .GeorgiaTaxHandler import GeorgiaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
-from easytax.utils.Logger import logger
+from ..utils.Logger import logger
 
 
 SUPPORTED_TAX_YEARS = {2022, 2023}
@@ -82,18 +82,11 @@ class TaxHandler:
     def display_tax_summary(self):
 
         try:
-            logger.info(f'Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}') # 
-            logger.info(f'Long term capital gains: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains])}')
-            
-            logger.info(f'federal tax owed: {", ".join([f"${i:,.0f}" for i in self.federal_tax_owed])}')
-            logger.info(f'federal LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.federal_long_term_capital_gains_tax_owed])}')
-            
-            logger.info(f'state tax owed: {", ".join([f"${i:,.0f}" for i in self.state_tax_owed])}')
-            logger.info(f'state LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.state_long_term_capital_gains_tax_owed])}')
-            
-            logger.info(f'social security tax owed: {", ".join([f"${i:,.0f}" for i in self.social_security_tax_owed])}')
-            logger.info(f'medicare tax owed: {", ".join([f"${i:,.0f}" for i in self.medicare_tax_owed])}')
+            self.federalHander.display_tax_summary()
+            self.socialSecurityTaxHandler.display_tax_summary()
+            self.medicareTaxHandler.display_tax_summary()
+            self.stateTaxHandler.display_tax_summary()
         except AttributeError as e:
-            raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")
+            raise AttributeError(f"{e} Ensure you call 'calculate_taxes' on relevant Handlers")
         return
             

@@ -1,6 +1,6 @@
 # Local Imports
-from easytax.base import FlatTax
-from easytax.base import FlatTaxBracket
+from ..base import FlatTax
+from ..base import FlatTaxBracket
 
 
 # 2023 Medicare Employee Rate

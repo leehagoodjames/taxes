@@ -1,6 +1,6 @@
 
 # Local Imports
-from easytax.brackets import MedicareIncomeTaxBrackets
+from ..brackets import MedicareIncomeTaxBrackets
 from .IndividualIncomeTaxHandlerBase import IndividualIncomeTaxHandlerBase
 
 SUPPORTED_TAX_YEARS = {2022, 2023}

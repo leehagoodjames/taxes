@@ -1,6 +1,6 @@
 # Local Imports
-from easytax.base import ProgressiveTax
-from easytax.base import ProgressiveTaxBracket
+from ..base import ProgressiveTax
+from ..base import ProgressiveTaxBracket
 
 
 # 2023 Married Filing Jointly

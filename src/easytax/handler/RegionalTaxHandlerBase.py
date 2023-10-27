@@ -1,6 +1,6 @@
 
 # Local Imports
-from easytax.utils.Logger import logger
+from ..utils.Logger import logger
 
 
 # Each handler can have its own AGI / MAGI
@@ -62,6 +62,9 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     def display_tax_summary(self):
 
         try:
+            logger.info(f'{self.region} Tax Summary')
+            logger.info(f'{self.region} Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
+            logger.info(f'{self.region} Long term capital gains: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains])}')
             logger.info(f'{self.region} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}')
             logger.info(f'{self.region} LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains_tax_owed])}')
         except AttributeError as e:

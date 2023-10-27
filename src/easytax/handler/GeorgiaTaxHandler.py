@@ -1,7 +1,7 @@
 
 # Local Imports
-from easytax.brackets import GeorgiaStateIncomeTaxBrackets
-from easytax.brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
+from ..brackets import GeorgiaStateIncomeTaxBrackets
+from ..brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
 from . import RegionalTaxHandlerBase
 
 SUPPORTED_TAX_YEARS = {2022, 2023}

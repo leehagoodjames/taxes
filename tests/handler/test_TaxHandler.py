@@ -95,7 +95,7 @@ class TestTaxHandler(unittest.TestCase):
         with self.assertRaises(AttributeError) as cm:
             taxHandler.display_tax_summary()
 
-        expected_message = "'TaxHandler' object has no attribute 'federal_tax_owed'. Ensure you call 'calculate_taxes' before attempting to call this method."
+        expected_message = "'FederalTaxHandler' object has no attribute 'income_tax_owed'. Ensure you call 'calculate_taxes' before attempting to call this method. Ensure you call 'calculate_taxes' on relevant Handlers"
         self.assertEqual(str(cm.exception), expected_message)
 
 

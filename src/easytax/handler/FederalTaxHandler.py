@@ -1,7 +1,7 @@
 
 # Local Imports
-from easytax.brackets import FederalIncomeTaxBrackets
-from easytax.brackets import FederalLongTermCapitalGainsTaxBrackets
+from ..brackets import FederalIncomeTaxBrackets
+from ..brackets import FederalLongTermCapitalGainsTaxBrackets
 from . import RegionalTaxHandlerBase
 
 
