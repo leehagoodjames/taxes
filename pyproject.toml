@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "easytax"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
   { name="Lee James", email="leehagoodjames@gmail.com" },
 ]
@@ -20,3 +20,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/leehagoodjames/taxes"
 "Bug Tracker" = "https://github.com/leehagoodjames/taxes/issues"
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "tests*"]

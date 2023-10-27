@@ -1,32 +1,14 @@
 # Third Party Imports
-from easytax.brackets import FederalIncomeTaxBrackets
-from easytax.brackets import FederalLongTermCapitalGainsTaxBrackets
-from easytax.brackets import GeorgiaStateIncomeTaxBrackets
-from easytax.brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
-from easytax.brackets import SocialSecurityIncomeTaxBrackets
-from easytax.brackets import MedicareIncomeTaxBrackets
-from easytax.utils.Logger import logger
+from easytax.handler import TaxHandler
 
 # Load in tax brackets for your year and filing-status.
-federal_taxes = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax
-federal_long_term_capital_gains_taxes = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-georgia_taxes = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
-georgia_capital_gains_taxes = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-social_security_taxes = SocialSecurityIncomeTaxBrackets.social_security_employee_2022_tax
-medicare_taxes = MedicareIncomeTaxBrackets.medicare_employee_2022_tax
+taxHandler = TaxHandler.TaxHandler(
+    tax_year = 2022, 
+    filling_status = "Married_Filling_Jointly", 
+    state = "Georgia", 
+    incomes = [200000], 
+    long_term_capital_gains = [100000],
+)
 
-# Compute the taxes.
-agi = 200000 # Includes short term capital gains
-long_term_capital_gains = 100000
-federal_tax = federal_taxes.calculate_taxes(agi) + federal_long_term_capital_gains_taxes.calculate_taxes(long_term_capital_gains)
-state_tax = georgia_taxes.calculate_taxes(agi) + georgia_capital_gains_taxes.calculate_taxes(long_term_capital_gains)
-social_security_tax = social_security_taxes.calculate_taxes(agi)
-medicare_tax = medicare_taxes.calculate_taxes(agi)
-
-# Show the result.
-logger.info(f'adjusted gross income: ${agi:,.0f}')
-logger.info(f'long term capital gains: ${long_term_capital_gains:,.0f}')
-logger.info(f'federal tax: ${federal_tax:,.0f}')
-logger.info(f'state tax: ${state_tax:,.0f}')
-logger.info(f'social security tax: ${social_security_tax:,.0f}')
-logger.info(f'medicare tax: ${medicare_tax:,.0f}')
+taxHandler.calculate_taxes()
+taxHandler.display_tax_summary()

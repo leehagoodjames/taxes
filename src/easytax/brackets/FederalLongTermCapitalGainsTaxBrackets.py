@@ -13,7 +13,7 @@ married_filing_jointly_2023_tax = ProgressiveTax.ProgressiveTax(
 
 # 2023 Married Filing Seperatlely
 # Source: https://www.nerdwallet.com/article/taxes/capital-gains-tax-rates#2023%20capital%20gains%20tax%20rates
-married_filing_seperately_2023_tax = ProgressiveTax.ProgressiveTax(
+married_filing_separately_2023_tax = ProgressiveTax.ProgressiveTax(
     ProgressiveTaxBracket.ProgressiveTaxBracket(
         tax_rates = [0, 0.15, 0.2],
         income_thresholds = [44625, 276900])
@@ -29,7 +29,7 @@ married_filing_jointly_2022_tax = ProgressiveTax.ProgressiveTax(
 
 # 2022 Married Filing Seperatlely
 # Source: https://www.nerdwallet.com/article/taxes/capital-gains-tax-rates#2022%20capital%20gains%20tax%20rates
-married_filing_seperately_2022_tax = ProgressiveTax.ProgressiveTax(
+married_filing_separately_2022_tax = ProgressiveTax.ProgressiveTax(
     ProgressiveTaxBracket.ProgressiveTaxBracket(
         tax_rates = [0, 0.15, 0.2],
         income_thresholds = [41675, 258600])
