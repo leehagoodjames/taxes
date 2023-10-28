@@ -16,6 +16,7 @@ class TestExample(unittest.TestCase):
             filling_status = "Married_Filling_Jointly", 
             state = "Georgia", 
             incomes = [200000], 
+            retirement_incomes=[0],
             long_term_capital_gains = [100000],
         )
 

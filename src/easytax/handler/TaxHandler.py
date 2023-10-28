@@ -13,7 +13,7 @@ SUPPORTED_STATES = {"Georgia"}
 
 class TaxHandler:
 
-    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], long_term_capital_gains: list[float], state_exemptions: int = 0):
+    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], retirement_incomes: list[float], long_term_capital_gains: list[float], state_exemptions: int = 0):
         """Create a TaxHandler object.
 
         Keyword arguments:
@@ -21,6 +21,7 @@ class TaxHandler:
         filling_status: str - The type of filling (Married Filling Jointly, Single, etc)
         state: str - The state that you will be filing. TODO: Support more than 1 state
         incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
+        retirement_incomes: list[float] - List of incomes from qualified retirement accounts, such as Traditional IRA and Tradional 401K distributions
         long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
         """
         
@@ -35,13 +36,14 @@ class TaxHandler:
         self.filling_status = filling_status
         self.state = state
         self.incomes = incomes
+        self.retirement_incomes = retirement_incomes
         self.long_term_capital_gains = long_term_capital_gains
 
         if self.state == "Georgia":
             self.stateTaxHandler = GeorgiaTaxHandler(
             tax_year=tax_year, 
             filling_status=filling_status, 
-            incomes=incomes, 
+            incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
             long_term_capital_gains=long_term_capital_gains,
             exemptions = state_exemptions,
         )
@@ -51,7 +53,7 @@ class TaxHandler:
         self.federalHander = FederalTaxHandler(
             tax_year=tax_year, 
             filling_status=filling_status, 
-            incomes=incomes, 
+            incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
             long_term_capital_gains=long_term_capital_gains,
         )
         self.socialSecurityTaxHandler = SocialSecurityIndividualIncomeTaxHandler(

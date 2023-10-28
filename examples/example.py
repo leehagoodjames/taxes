@@ -6,7 +6,8 @@ taxHandler = TaxHandler.TaxHandler(
     tax_year = 2022, 
     filling_status = "Married_Filling_Jointly", 
     state = "Georgia", 
-    incomes = [273000 - 40000], 
+    incomes = [247472 + 85 + 41 + 6767 + 272 - (44076 + 3000) ], 
+    retirement_incomes=[0],
     long_term_capital_gains = [0],
 )
 
