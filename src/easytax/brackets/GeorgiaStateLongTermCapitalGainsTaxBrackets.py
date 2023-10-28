@@ -7,5 +7,11 @@ from ..brackets import GeorgiaStateIncomeTaxBrackets
 # 2023 Married Filing Jointly
 married_filing_jointly_2023_tax = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax
 
+# 2023 Married Filing Separately
+married_filing_separately_2023_tax = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2023_tax
+
 # 2022 Married Filing Jointly
 married_filing_jointly_2022_tax = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
+
+# 2022 Married Filing Separately
+married_filing_separately_2022_tax = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2022_tax

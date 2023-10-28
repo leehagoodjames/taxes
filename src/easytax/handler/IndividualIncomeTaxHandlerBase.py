@@ -42,7 +42,9 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
     def display_tax_summary(self):
 
         try:            
-            logger.info(f'{self.tax_name} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}')
+            logger.info(f'{self.tax_name} Tax Summary')
+            logger.info(f'{self.tax_name} Modified Adjusted Gross Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
+            logger.info(f'{self.tax_name} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}\n')
         except AttributeError as e:
             raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")
         return

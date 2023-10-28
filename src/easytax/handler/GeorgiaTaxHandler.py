@@ -9,7 +9,7 @@ SUPPORTED_FILLING_STATUSES = {"Married_Filling_Jointly", "Married_Filling_separa
 
 # Each handler can have its own AGI / MAGI
 class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
-    def __init__(self, tax_year: int, filling_status: str, incomes: list[float], long_term_capital_gains: list[float]):
+    def __init__(self, tax_year: int, filling_status: str, incomes: list[float], long_term_capital_gains: list[float], exemptions: int):
         """Create a GeorgiaTaxHandler object.
 
         Keyword arguments:
@@ -17,6 +17,7 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         filling_status: str - The type of filling (Married Filling Jointly, Single, etc)
         incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
+        exemptions: int - defined by the state of Georgia on line 6c.
         """
         
         if tax_year not in SUPPORTED_TAX_YEARS:
@@ -35,6 +36,11 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.long_term_capital_gains = [0] * len(long_term_capital_gains)
 
         if self.tax_year == 2023: 
+            # TODO: Fix this deduction logic
+            self.deduction = 3700 * exemptions
+            deduction_per_income = self.deduction / len(self.incomes)
+            self.incomes = [i - deduction_per_income for i in self.incomes]
+
             if self.filling_status == "Married_Filling_Jointly":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax # Doesn't need to be used, LTCG are zero
@@ -44,6 +50,11 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filling_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
+            # TODO: Fix this deduction logic
+            self.deduction = 3700 * exemptions
+            deduction_per_income = self.deduction / len(self.incomes)
+            self.incomes = [i - deduction_per_income for i in self.incomes]
+
             if self.filling_status == "Married_Filling_Jointly":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax

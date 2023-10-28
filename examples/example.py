@@ -6,8 +6,8 @@ taxHandler = TaxHandler.TaxHandler(
     tax_year = 2022, 
     filling_status = "Married_Filling_Jointly", 
     state = "Georgia", 
-    incomes = [200000], 
-    long_term_capital_gains = [100000],
+    incomes = [273000 - 40000], 
+    long_term_capital_gains = [0],
 )
 
 taxHandler.calculate_taxes()

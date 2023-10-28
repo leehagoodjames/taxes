@@ -63,10 +63,10 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
 
         try:
             logger.info(f'{self.region} Tax Summary')
-            logger.info(f'{self.region} Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
+            logger.info(f'{self.region} Modified Adjusted Gross Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
             logger.info(f'{self.region} Long term capital gains: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains])}')
             logger.info(f'{self.region} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}')
-            logger.info(f'{self.region} LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains_tax_owed])}')
+            logger.info(f'{self.region} LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains_tax_owed])}\n')
         except AttributeError as e:
             raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")
         return

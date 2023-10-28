@@ -13,7 +13,7 @@ SUPPORTED_STATES = {"Georgia"}
 
 class TaxHandler:
 
-    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], long_term_capital_gains: list[float]):
+    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], long_term_capital_gains: list[float], state_exemptions: int = 0):
         """Create a TaxHandler object.
 
         Keyword arguments:
@@ -43,6 +43,7 @@ class TaxHandler:
             filling_status=filling_status, 
             incomes=incomes, 
             long_term_capital_gains=long_term_capital_gains,
+            exemptions = state_exemptions,
         )
         else:
             raise ValueError(f"Unsupported combination of status: {self.filling_status}, year {self.tax_year}, and state {self.state}")
@@ -61,6 +62,9 @@ class TaxHandler:
             tax_year=tax_year, 
             incomes=incomes, 
         )
+        self.calculate_taxes()
+        self.compute_total_tax()
+
         return
     
 
@@ -78,6 +82,17 @@ class TaxHandler:
         self.social_security_tax_owed = self.socialSecurityTaxHandler.income_tax_owed
         self.medicare_tax_owed = self.medicareTaxHandler.income_tax_owed
         return
+    
+
+    def compute_total_tax(self):
+        self.total_tax = sum(self.federal_tax_owed + \
+            self.federal_long_term_capital_gains_tax_owed + \
+            self.state_tax_owed + \
+            self.state_long_term_capital_gains_tax_owed + \
+            self.social_security_tax_owed + \
+            self.medicare_tax_owed)
+        return
+    
 
     def display_tax_summary(self):
 
@@ -86,6 +101,7 @@ class TaxHandler:
             self.socialSecurityTaxHandler.display_tax_summary()
             self.medicareTaxHandler.display_tax_summary()
             self.stateTaxHandler.display_tax_summary()
+            logger.info(f'Total Tax Owed: ${self.total_tax:,.0f}')
         except AttributeError as e:
             raise AttributeError(f"{e} Ensure you call 'calculate_taxes' on relevant Handlers")
         return
