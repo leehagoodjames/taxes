@@ -11,7 +11,9 @@ SUPPORTED_TAX_YEAR = 2023
 SUPPORTED_FILLING_STATUS = "Married_Filling_Jointly"
 SUPPORTED_STATE = "Georgia"
 SUPPORTED_INCOMES = [150000, 100000]
+SUPPORTED_RETIREMENT_INCOMES = [0, 0]
 SUPPORTED_LONG_TERM_CAPITAL_GAINS = [60000, 40000]
+SUPPORTED_STATE_DATA = {'exemptions': 0 }
 
 # Creates a TaxHandler that defaults to supported values
 def tax_handler_builder(
@@ -19,13 +21,18 @@ def tax_handler_builder(
         filling_status=SUPPORTED_FILLING_STATUS, 
         state=SUPPORTED_STATE, 
         incomes=SUPPORTED_INCOMES,
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS):
+        retirement_incomes=SUPPORTED_RETIREMENT_INCOMES,
+        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS,
+        state_data=SUPPORTED_STATE_DATA,
+        ):
     return TaxHandler.TaxHandler(
             tax_year=tax_year, 
             filling_status=filling_status, 
             state=state, 
             incomes=incomes, 
+            retirement_incomes=retirement_incomes,
             long_term_capital_gains=long_term_capital_gains,
+            state_data=state_data,
         )
 
 

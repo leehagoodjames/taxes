@@ -18,6 +18,7 @@ class TestExample(unittest.TestCase):
             incomes = [200000], 
             retirement_incomes=[0],
             long_term_capital_gains = [100000],
+            state_data={'exemptions': 2}
         )
 
         taxHandler.calculate_taxes()

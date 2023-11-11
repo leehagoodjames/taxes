@@ -13,16 +13,17 @@ SUPPORTED_STATES = {"Georgia"}
 
 class TaxHandler:
 
-    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], retirement_incomes: list[float], long_term_capital_gains: list[float], state_exemptions: int = 0):
+    def __init__(self, tax_year: int, filling_status: str, state: str, incomes: list[float], retirement_incomes: list[float], long_term_capital_gains: list[float], state_data = None):
         """Create a TaxHandler object.
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
         filling_status: str - The type of filling (Married Filling Jointly, Single, etc)
         state: str - The state that you will be filing. TODO: Support more than 1 state
-        incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
+        incomes: list[float] - List of the Adjust Gross Income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         retirement_incomes: list[float] - List of incomes from qualified retirement accounts, such as Traditional IRA and Tradional 401K distributions
         long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
+        state_data: A dictionary of information relevant to the selected state 
         """
         
         if tax_year not in SUPPORTED_TAX_YEARS:
@@ -45,7 +46,7 @@ class TaxHandler:
             filling_status=filling_status, 
             incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
             long_term_capital_gains=long_term_capital_gains,
-            exemptions = state_exemptions,
+            state_data = state_data,
         )
         else:
             raise ValueError(f"Unsupported combination of status: {self.filling_status}, year {self.tax_year}, and state {self.state}")
