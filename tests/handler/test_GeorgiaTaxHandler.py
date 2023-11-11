@@ -3,11 +3,11 @@ import unittest
 
 # Local Imports
 from src.easytax.handler import GeorgiaTaxHandler
-from src.easytax.handler.TaxHandler import SUPPORTED_TAX_YEARS
-from src.easytax.handler.TaxHandler import SUPPORTED_FILLING_STATUSES
+from src.easytax.utils.Constants import *
+
 
 SUPPORTED_TAX_YEAR = 2023
-SUPPORTED_FILLING_STATUS = "Married_Filling_Jointly"
+SUPPORTED_FILING_STATUS = "Married_Filling_Jointly"
 SUPPORTED_INCOMES = [150000, 100000]
 SUPPORTED_LONG_TERM_CAPITAL_GAINS = [60000, 40000]
 SUPPORTED_STATE_DATA = {'exemptions': 0}
@@ -15,13 +15,13 @@ SUPPORTED_STATE_DATA = {'exemptions': 0}
 # Creates a TaxHandler that defaults to supported values
 def handler_builder(
         tax_year=SUPPORTED_TAX_YEAR, 
-        filling_status=SUPPORTED_FILLING_STATUS, 
+        filing_status=SUPPORTED_FILING_STATUS, 
         incomes=SUPPORTED_INCOMES,
         long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS,
         state_data=SUPPORTED_STATE_DATA):
     return GeorgiaTaxHandler.GeorgiaTaxHandler(
             tax_year=tax_year, 
-            filling_status=filling_status, 
+            filing_status=filing_status, 
             incomes=incomes, 
             long_term_capital_gains=long_term_capital_gains,
             state_data=state_data,
@@ -33,7 +33,7 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
     def test_init_success(self):
         taxHandler = handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
-        self.assertEqual(taxHandler.filling_status, SUPPORTED_FILLING_STATUS)
+        self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
         self.assertEqual(taxHandler.incomes, [210000, 140000]) # Georgia considers LTCG income.
         self.assertEqual(taxHandler.long_term_capital_gains, [0, 0])
 
@@ -47,13 +47,13 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_message)
 
 
-    def test_init_failure_unsupported_filling_status(self):
-        unsupported_filling_status = "Unsupported"
+    def test_init_failure_unsupported_filing_status(self):
+        unsupported_filing_status = "Unsupported"
 
         with self.assertRaises(ValueError) as cm:
-            _ = handler_builder(filling_status=unsupported_filling_status)
+            _ = handler_builder(filing_status=unsupported_filing_status)
 
-        expected_message = f"filling_status must be in SUPPORTED_FILLING_STATUSES: {SUPPORTED_FILLING_STATUSES}, got: {unsupported_filling_status}"
+        expected_message = f"filing_status must be in SUPPORTED_FILING_STATUSES: {SUPPORTED_FILING_STATUSES}, got: {unsupported_filing_status}"
         self.assertEqual(str(cm.exception), expected_message)
 
     def test_init_failure_unsupported_state_data_none(self):

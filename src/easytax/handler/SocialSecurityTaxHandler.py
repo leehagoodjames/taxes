@@ -2,9 +2,8 @@
 # Local Imports
 from ..brackets import SocialSecurityIncomeTaxBrackets
 from .IndividualIncomeTaxHandlerBase import IndividualIncomeTaxHandlerBase
+from ..utils.InputValidator import InputValidator
 
-
-SUPPORTED_TAX_YEARS = {2022, 2023}
 
 # Each handler can have its own AGI / MAGI
 class SocialSecurityIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
@@ -15,9 +14,8 @@ class SocialSecurityIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         tax_year: int - The year for tax filling. 
         incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         """
-        
-        if tax_year not in SUPPORTED_TAX_YEARS:
-            raise ValueError(f"tax_year must be in SUPPORTED_TAX_YEARS: {SUPPORTED_TAX_YEARS}, got: {tax_year}")
+
+        InputValidator.validate_tax_year(tax_year)
         
         self.tax_year = tax_year
         self.incomes = incomes
@@ -28,7 +26,7 @@ class SocialSecurityIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         elif self.tax_year == 2022:
             self.income_tax_brackets = SocialSecurityIncomeTaxBrackets.individual_2022_tax
         else:
-            raise ValueError(f"Unsupported combination of status: {self.filling_status}, year {self.tax_year}")
+            raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
         
         return
     
