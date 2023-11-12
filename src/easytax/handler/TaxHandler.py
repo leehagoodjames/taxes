@@ -6,20 +6,18 @@ from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
 from ..utils.Logger import logger
 from ..utils.InputValidator import InputValidator
-
+from ..income.FederalIncomeHandler import FederalIncomeHandler
 
 class TaxHandler:
 
-    def __init__(self, tax_year: int, filing_status: str, state: str, incomes: list[float], retirement_incomes: list[float], long_term_capital_gains: list[float], state_data = None, deductions = None):
+    def __init__(self, tax_year: int, filing_status: str, state: str, incomes: list[dict], state_data = None, deductions = None):
         """Create a TaxHandler object.
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
         filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
         state: str - The state that you will be filing. TODO: Support more than 1 state
-        incomes: list[float] - List of the Adjust Gross Income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
-        retirement_incomes: list[float] - List of incomes from qualified retirement accounts, such as Traditional IRA and Tradional 401K distributions
-        long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
+        incomes: list[dict] - List of dicts of income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         state_data: dict - information relevant to the selected state 
         deductions: dict - information relevant to Deductions
         """
@@ -27,20 +25,32 @@ class TaxHandler:
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
         InputValidator.validate_state(state)
+
+        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(d | {'tax_year': tax_year, 'filing_status': filing_status}) for d in incomes]
         
+        # if filing_status == "Married_Filling_Jointly":
+        #     # Don't require all inputs to be the same length, fold them into one
+        #     FederalIncomeHandler.from_dict(income_data)
+        # elif filing_status == "Married_Filling_separately":
+        #     if len() != 2:
+        #         raise ValueError(f"")
+        # # TODO: Other statuses
+
         self.tax_year = tax_year
         self.filing_status = filing_status
         self.state = state
-        self.incomes = incomes
-        self.retirement_incomes = retirement_incomes
-        self.long_term_capital_gains = long_term_capital_gains
+        # self.incomes = incomes
+        # self.retirement_incomes = retirement_incomes
+        # self.long_term_capital_gains = long_term_capital_gains
 
         if self.state == "Georgia":
             self.stateTaxHandler = GeorgiaTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
-            long_term_capital_gains=long_term_capital_gains,
+            federalIncomeHandlers=self.federalIncomeHandlers,
+            # incomes=incomes,
+            # incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
+            # long_term_capital_gains=long_term_capital_gains,
             state_data = state_data,
         )
         else:
@@ -49,16 +59,18 @@ class TaxHandler:
         self.federalHander = FederalTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
-            long_term_capital_gains=long_term_capital_gains,
+            # incomes=incomes,
+            federalIncomeHandlers=self.federalIncomeHandlers,
+            # incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
+            # long_term_capital_gains=long_term_capital_gains,
         )
         self.socialSecurityTaxHandler = SocialSecurityIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            incomes=incomes, 
+            federalIncomeHandlers=self.federalIncomeHandlers,
         )
         self.medicareTaxHandler = MedicareIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            incomes=incomes, 
+            federalIncomeHandlers=self.federalIncomeHandlers,
         )
         self.calculate_taxes()
         self.compute_total_tax()

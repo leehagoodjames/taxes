@@ -3,32 +3,32 @@
 from ..brackets import FederalIncomeTaxBrackets
 from ..brackets import FederalLongTermCapitalGainsTaxBrackets
 from . import RegionalTaxHandlerBase
-from ..utils.Constants import *
 from ..utils.InputValidator import InputValidator
+from ..income.FederalIncomeHandler import FederalIncomeHandler
 
 
 # Each handler can have its own AGI / MAGI
 class FederalTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
-    def __init__(self, tax_year: int, filing_status: str, incomes: list[float], long_term_capital_gains: list[float]):
+    def __init__(self, tax_year: int, filing_status: str, federalIncomeHandlers: list[FederalIncomeHandler]):
         """Create a FederalTaxHandler object.
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
         filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
-        incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
-        long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
+        federalIncomeHandlers: list[FederalIncomeHandler] - List of FederalIncomeHandler objects
         """
         
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
-        
-        if len(incomes) != len(long_term_capital_gains):
-            raise ValueError(f"'incomes' must have the same length as 'long_term_capital_gains'. got lengths of {len(incomes)} and {len(long_term_capital_gains)} respectively")
+
+        # if len(incomes) != len(long_term_capital_gains):
+        #     raise ValueError(f"'incomes' must have the same length as 'long_term_capital_gains'. got lengths of {len(incomes)} and {len(long_term_capital_gains)} respectively")
         
         self.tax_year = tax_year
         self.filing_status = filing_status
-        self.incomes = incomes
-        self.long_term_capital_gains = long_term_capital_gains
+        self.total_incomes = [f.total_income for f in federalIncomeHandlers]
+        self.taxable_incomes = [f.taxable_income for f in federalIncomeHandlers]
+        self.long_term_capital_gains = [f.long_term_capital_gains for f in federalIncomeHandlers]
         self.region = "Federal"
 
         if self.tax_year == 2023: 

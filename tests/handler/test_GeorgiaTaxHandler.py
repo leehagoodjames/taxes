@@ -4,26 +4,19 @@ import unittest
 # Local Imports
 from src.easytax.handler import GeorgiaTaxHandler
 from src.easytax.utils.Constants import *
+from tests.utils.TestContants import *
 
-
-SUPPORTED_TAX_YEAR = 2023
-SUPPORTED_FILING_STATUS = "Married_Filling_Jointly"
-SUPPORTED_INCOMES = [150000, 100000]
-SUPPORTED_LONG_TERM_CAPITAL_GAINS = [60000, 40000]
-SUPPORTED_STATE_DATA = {'exemptions': 0}
 
 # Creates a TaxHandler that defaults to supported values
 def handler_builder(
         tax_year=SUPPORTED_TAX_YEAR, 
         filing_status=SUPPORTED_FILING_STATUS, 
-        incomes=SUPPORTED_INCOMES,
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS,
+        federalIncomeHandlers=SUPPORTED_FEDERAL_INCOME_HANDLERS,
         state_data=SUPPORTED_STATE_DATA):
     return GeorgiaTaxHandler.GeorgiaTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            incomes=incomes, 
-            long_term_capital_gains=long_term_capital_gains,
+            federalIncomeHandlers=federalIncomeHandlers,
             state_data=state_data,
         )
 
@@ -34,7 +27,9 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         taxHandler = handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
-        self.assertEqual(taxHandler.incomes, [210000, 140000]) # Georgia considers LTCG income.
+        self.assertEqual(taxHandler.taxable_incomes, [
+            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1, 
+            SUPPORTED_SALARY_AND_WAGES_2 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2]) # Georgia considers LTCG income.
         self.assertEqual(taxHandler.long_term_capital_gains, [0, 0])
 
     def test_init_failure_unsupported_tax_year(self):

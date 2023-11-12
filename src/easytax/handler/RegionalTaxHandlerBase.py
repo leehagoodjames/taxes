@@ -19,11 +19,11 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     Keyword arguments:
     filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
     region: str - The region that you will be filing. TODO: Support case when indivudal splits time across regions.
-    incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
+    taxable_incomess: list[float] - List of the taxable incomse for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
     long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
     """
 
-    incomes = None
+    taxable_incomes = None
     long_term_capital_gains = None
     filing_status = None
     income_tax_brackets = None
@@ -31,8 +31,8 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     region = None
 
     def check_required_attributes(self):
-        if self.incomes is None:
-            raise TypeError(f"Subclass must define class attribute 'incomes'")
+        if self.taxable_incomes is None:
+            raise TypeError(f"Subclass must define class attribute 'taxable_incomes'")
         if self.long_term_capital_gains is None:
             raise TypeError(f"Subclass must define class attribute 'long_term_capital_gains'")
         if self.filing_status is None:
@@ -48,12 +48,12 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     def calculate_taxes(self):
 
         if self.filing_status == "Married_Filling_Jointly":
-            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.incomes))]
+            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.taxable_incomes))]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(sum(self.long_term_capital_gains))]
         
         elif self.filing_status == "Married_Filling_separately":
-            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.incomes]
-            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.incomes]
+            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
+            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
         else:
             raise Exception(f"Unexpected filing_status {self.filing_status}")
         return
@@ -63,7 +63,7 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
 
         try:
             logger.info(f'{self.region} Tax Summary')
-            logger.info(f'{self.region} Modified Adjusted Gross Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
+            logger.info(f'{self.region} Taxable Incomes: {", ".join([f"${i:,.0f}" for i in self.taxable_incomes])}')
             logger.info(f'{self.region} Long term capital gains: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains])}')
             logger.info(f'{self.region} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}')
             logger.info(f'{self.region} LTCG tax owed: {", ".join([f"${i:,.0f}" for i in self.long_term_capital_gains_tax_owed])}\n')

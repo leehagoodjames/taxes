@@ -4,24 +4,19 @@ import unittest
 # Local Imports
 from src.easytax.handler import FederalTaxHandler
 from src.easytax.utils.Constants import *
+from tests.utils.TestContants import *
 
-
-SUPPORTED_TAX_YEAR = 2023
-SUPPORTED_FILING_STATUS = "Married_Filling_Jointly"
-SUPPORTED_INCOMES = [150000, 100000]
-SUPPORTED_LONG_TERM_CAPITAL_GAINS = [60000, 40000]
 
 # Creates a TaxHandler that defaults to supported values
 def handler_builder(
         tax_year=SUPPORTED_TAX_YEAR, 
         filing_status=SUPPORTED_FILING_STATUS, 
-        incomes=SUPPORTED_INCOMES,
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS):
+        federalIncomeHandlers=SUPPORTED_FEDERAL_INCOME_HANDLERS,
+        ):
     return FederalTaxHandler.FederalTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            incomes=incomes, 
-            long_term_capital_gains=long_term_capital_gains,
+            federalIncomeHandlers=federalIncomeHandlers,
         )
 
 
@@ -31,8 +26,8 @@ class TestFederalTaxHandler(unittest.TestCase):
         taxHandler = handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
-        self.assertEqual(taxHandler.incomes, SUPPORTED_INCOMES)
-        self.assertEqual(taxHandler.long_term_capital_gains, SUPPORTED_LONG_TERM_CAPITAL_GAINS)
+        self.assertEqual(taxHandler.taxable_incomes, [SUPPORTED_SALARY_AND_WAGES_1, SUPPORTED_SALARY_AND_WAGES_2])
+        self.assertEqual(taxHandler.long_term_capital_gains, [SUPPORTED_LONG_TERM_CAPITAL_GAINS_1, SUPPORTED_LONG_TERM_CAPITAL_GAINS_2])
 
     def test_init_failure_unsupported_tax_year(self):
         tax_year = 2020 # Unsupported year

@@ -21,12 +21,12 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
     incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
     """
 
-    incomes = None
+    taxable_incomes = None
     income_tax_brackets = None
     tax_name = None
 
     def check_required_attributes(self):
-        if self.incomes is None:
+        if self.taxable_incomes is None:
             raise TypeError(f"Subclass must define class attribute 'incomes'")
         if self.income_tax_brackets is None:
             raise TypeError(f"Subclass must define class attribute 'income_tax_brackets'")
@@ -35,7 +35,7 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
 
 
     def calculate_taxes(self):
-        self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.incomes]
+        self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
         return
     
 
@@ -43,7 +43,7 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
 
         try:            
             logger.info(f'{self.tax_name} Tax Summary')
-            logger.info(f'{self.tax_name} Modified Adjusted Gross Incomes: {", ".join([f"${i:,.0f}" for i in self.incomes])}')
+            logger.info(f'{self.tax_name} Modified Adjusted Gross Incomes: {", ".join([f"${i:,.0f}" for i in self.taxable_incomes])}')
             logger.info(f'{self.tax_name} Income Tax owed: {", ".join([f"${i:,.0f}" for i in self.income_tax_owed])}\n')
         except AttributeError as e:
             raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")

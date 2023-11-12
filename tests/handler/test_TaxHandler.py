@@ -4,15 +4,9 @@ import unittest
 # Local Imports
 from src.easytax.handler import TaxHandler
 from src.easytax.utils.Constants import *
+from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+from tests.utils.TestContants import *
 
-
-SUPPORTED_TAX_YEAR = 2023
-SUPPORTED_FILING_STATUS = "Married_Filling_Jointly"
-SUPPORTED_STATE = "Georgia"
-SUPPORTED_INCOMES = [150000, 100000]
-SUPPORTED_RETIREMENT_INCOMES = [0, 0]
-SUPPORTED_LONG_TERM_CAPITAL_GAINS = [60000, 40000]
-SUPPORTED_STATE_DATA = {'exemptions': 0 }
 
 # Creates a TaxHandler that defaults to supported values
 def tax_handler_builder(
@@ -20,30 +14,28 @@ def tax_handler_builder(
         filing_status=SUPPORTED_FILING_STATUS, 
         state=SUPPORTED_STATE, 
         incomes=SUPPORTED_INCOMES,
-        retirement_incomes=SUPPORTED_RETIREMENT_INCOMES,
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS,
         state_data=SUPPORTED_STATE_DATA,
         ):
     return TaxHandler.TaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
             state=state, 
-            incomes=incomes, 
-            retirement_incomes=retirement_incomes,
-            long_term_capital_gains=long_term_capital_gains,
+            incomes=incomes,
             state_data=state_data,
         )
 
 
 class TestTaxHandler(unittest.TestCase):
+   
 
     def test_init_success(self):
+        self.maxDiff = None
         taxHandler = tax_handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
         self.assertEqual(taxHandler.state, SUPPORTED_STATE)
-        self.assertEqual(taxHandler.incomes, SUPPORTED_INCOMES)
-        self.assertEqual(taxHandler.long_term_capital_gains, SUPPORTED_LONG_TERM_CAPITAL_GAINS)
+        self.assertEqual(taxHandler.federalIncomeHandlers, SUPPORTED_FEDERAL_INCOME_HANDLERS)
+
 
     def test_init_failure_unsupported_tax_year(self):
         tax_year = 2020 # Unsupported year

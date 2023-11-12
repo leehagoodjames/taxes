@@ -12,13 +12,25 @@ class TestExample(unittest.TestCase):
 
         # Load in tax brackets for your year and filing-status.
         taxHandler = TaxHandler.TaxHandler(
-            tax_year = 2022, 
-            filling_status = "Married_Filling_Jointly", 
-            state = "Georgia", 
-            incomes = [200000], 
-            retirement_incomes=[0],
-            long_term_capital_gains = [100000],
-            state_data={'exemptions': 2}
+            tax_year = 2022,
+            filing_status = "Married_Filling_Jointly",
+            state = "Georgia",
+            incomes = [
+                {
+                    "salaries_and_wages": 200000,
+                    "taxable_pensions": 0, # 401k distributions,
+                    "long_term_capital_gains": 100000,
+                }
+            ],
+            deductions={
+                'use_standard_deduction': False,
+                'taxes_paid': 10000,
+                'interest_paid': 15000,
+                'charitable_contributions':20000,
+            },
+            state_data={
+                'exemptions': 2
+            },
         )
 
         taxHandler.calculate_taxes()
