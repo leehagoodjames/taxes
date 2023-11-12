@@ -27,30 +27,16 @@ class TaxHandler:
         InputValidator.validate_state(state)
 
         self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(d | {'tax_year': tax_year, 'filing_status': filing_status}) for d in incomes]
-        
-        # if filing_status == "Married_Filling_Jointly":
-        #     # Don't require all inputs to be the same length, fold them into one
-        #     FederalIncomeHandler.from_dict(income_data)
-        # elif filing_status == "Married_Filling_separately":
-        #     if len() != 2:
-        #         raise ValueError(f"")
-        # # TODO: Other statuses
 
         self.tax_year = tax_year
         self.filing_status = filing_status
         self.state = state
-        # self.incomes = incomes
-        # self.retirement_incomes = retirement_incomes
-        # self.long_term_capital_gains = long_term_capital_gains
 
         if self.state == "Georgia":
             self.stateTaxHandler = GeorgiaTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
             federalIncomeHandlers=self.federalIncomeHandlers,
-            # incomes=incomes,
-            # incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
-            # long_term_capital_gains=long_term_capital_gains,
             state_data = state_data,
         )
         else:
@@ -59,10 +45,7 @@ class TaxHandler:
         self.federalHander = FederalTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            # incomes=incomes,
             federalIncomeHandlers=self.federalIncomeHandlers,
-            # incomes=[i + r for i,r in zip(incomes, retirement_incomes)], # this is wrong, they aren't guranteed to be the same length 
-            # long_term_capital_gains=long_term_capital_gains,
         )
         self.socialSecurityTaxHandler = SocialSecurityIndividualIncomeTaxHandler(
             tax_year=tax_year, 

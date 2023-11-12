@@ -24,8 +24,7 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
-        # if len(incomes) != len(long_term_capital_gains):
-        #     raise ValueError(f"'incomes' must have the same length as 'long_term_capital_gains'. got lengths of {len(incomes)} and {len(long_term_capital_gains)} respectively")
+        
         if state_data is None:
             raise ValueError(f"invalid value for 'state_data': {state_data}")
         if state_data.get('exemptions') is None:

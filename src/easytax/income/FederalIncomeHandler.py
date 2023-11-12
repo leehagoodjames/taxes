@@ -1,4 +1,7 @@
+# Local Imports
 from ..utils.InputValidator import InputValidator
+from ..deductions import FederalStandardDeductions
+
 
 class FederalIncomeHandler:
     def __init__(self,
@@ -35,7 +38,6 @@ class FederalIncomeHandler:
                 charitable_contributions: float = 0,
                 casualty_losses: float = 0,
                 miscellaneous_expenses: float = 0,
-                standard_deduction: float = 0,
                 qbid: float = 0,
                 ):
         
@@ -77,7 +79,24 @@ class FederalIncomeHandler:
         self.charitable_contributions = charitable_contributions
         self.casualty_losses = casualty_losses
         self.miscellaneous_expenses = miscellaneous_expenses
-        self.standard_deduction = standard_deduction # TODO: Set by the year & filling status
+
+        # Set standard Deduction
+        if self.tax_year == 2023: 
+            if self.filing_status == "Married_Filling_Jointly":
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction
+            elif self.filing_status == "Married_Filling_separately":
+                self.standard_deduction = FederalStandardDeductions.married_filing_separately_2023_deduction
+            else:
+                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
+        elif self.tax_year == 2022:
+            if self.filing_status == "Married_Filling_Jointly":
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction
+            elif self.filing_status == "Married_Filling_separately":
+                self.standard_deduction = FederalStandardDeductions.married_filing_separately_2022_deduction
+            else:
+                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        else:
+            raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
 
         # QBID
         self.qbid = qbid
@@ -127,6 +146,8 @@ class FederalIncomeHandler:
 
         if self.use_standard_deduction:
             self.deduction_taken = self.standard_deduction
+
+            
         else:
             self.deduction_taken = self.allowable_itemized_deductions
 
@@ -253,7 +274,6 @@ class FederalIncomeHandler:
             "charitable_contributions": 0,
             "casualty_losses": 0,
             "miscellaneous_expenses": 0,
-            "standard_deduction": 0,
             "qbid": 0,
         }
 
