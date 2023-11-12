@@ -17,7 +17,7 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     Base Object for a RegionalTaxHandler, such as a State or Federal Taxes.
     
     Keyword arguments:
-    filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
+    filing_status: str - The type of filling (Married Filing Jointly, Single, etc)
     region: str - The region that you will be filing. TODO: Support case when indivudal splits time across regions.
     taxable_incomess: list[float] - List of the taxable incomse for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
     long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
@@ -47,11 +47,11 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
 
     def calculate_taxes(self):
 
-        if self.filing_status == "Married_Filling_Jointly":
+        if self.filing_status == "Married_Filing_Jointly":
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.taxable_incomes))]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(sum(self.long_term_capital_gains))]
         
-        elif self.filing_status == "Married_Filling_separately":
+        elif self.filing_status == "Married_Filing_separately":
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
         else:

@@ -20,7 +20,7 @@ def tax_handler_builder(
             tax_year=tax_year, 
             filing_status=filing_status, 
             state=state, 
-            incomes=incomes,
+            incomes_adjustments_and_deductions=incomes,
             state_data=state_data,
         )
 

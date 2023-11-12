@@ -31,6 +31,16 @@ class FederalIncomeHandler:
                 other_income: float = 0,
                 # LTCG
                 long_term_capital_gains: float = 0,
+                # Income Adjustments
+                moving_expenses: float = 0,
+                deductible_self_employment_tax: float = 0,
+                sep_simple_qualified_plans_deductions: float = 0,
+                self_employment_health_insurance: float = 0,
+                penalty_early_withdrawal_savings: float = 0,
+                alimony_paid: float = 0,
+                ira_deductions: float = 0,
+                student_loan_interest: float = 0,
+                other_adjustments: float = 0,
                 # Deductions
                 medical_expenses: float = 0,
                 taxes_paid: float = 0,
@@ -72,6 +82,17 @@ class FederalIncomeHandler:
         # LTCG
         self.long_term_capital_gains = long_term_capital_gains
 
+        # Income Adjustments
+        self.moving_expenses = moving_expenses
+        self.deductible_self_employment_tax = deductible_self_employment_tax
+        self.sep_simple_qualified_plans_deductions = sep_simple_qualified_plans_deductions
+        self.self_employment_health_insurance = self_employment_health_insurance
+        self.penalty_early_withdrawal_savings = penalty_early_withdrawal_savings
+        self.alimony_paid = alimony_paid
+        self.ira_deductions = ira_deductions
+        self.student_loan_interest = student_loan_interest
+        self.other_adjustments = other_adjustments
+
         # Deductions
         self.medical_expenses = medical_expenses
         self.taxes_paid = taxes_paid
@@ -82,16 +103,16 @@ class FederalIncomeHandler:
 
         # Set standard Deduction
         if self.tax_year == 2023: 
-            if self.filing_status == "Married_Filling_Jointly":
+            if self.filing_status == "Married_Filing_Jointly":
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction
-            elif self.filing_status == "Married_Filling_separately":
+            elif self.filing_status == "Married_Filing_separately":
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2023_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
-            if self.filing_status == "Married_Filling_Jointly":
+            if self.filing_status == "Married_Filing_Jointly":
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction
-            elif self.filing_status == "Married_Filling_separately":
+            elif self.filing_status == "Married_Filing_separately":
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2022_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
@@ -102,7 +123,7 @@ class FederalIncomeHandler:
         self.qbid = qbid
 
         # Notably omit long_term_capital_gains
-        self.incomes_towards_agi = [
+        self.income_sources = [
             self.salaries_and_wages, 
             self.interest_income, 
             self.tax_exempt_interest, 
@@ -123,12 +144,32 @@ class FederalIncomeHandler:
             self.taxable_social_security, 
             self.other_income
         ]
-        for i in self.incomes_towards_agi:
-            if type(i) is not int and type(i) is not float:
+        for i in self.income_sources:
+            if type(i) not in (int, float):
                 raise TypeError(f"Unsupported income type {type(i)} for income {i}")
+        self.total_income = sum(self.income_sources)
+
+        # Calculate Total Income, Adjustments, and AGI
+        self.adjustment_sources = [
+            self.moving_expenses, 
+            self.deductible_self_employment_tax, 
+            self.sep_simple_qualified_plans_deductions, 
+            self.self_employment_health_insurance, 
+            self.penalty_early_withdrawal_savings, 
+            self.alimony_paid, 
+            self.ira_deductions, 
+            self.student_loan_interest, 
+            self.other_adjustments
+        ]
+        for i in self.adjustment_sources:
+            if type(i) not in (int, float):
+                raise TypeError(f"Unsupported income type {type(i)} for adjustment {i}")
+            
+        self.total_adjustments = sum(self.adjustment_sources)
+        self.adjusted_gross_income = self.total_income - self.total_adjustments
 
         # Deduction fields
-        self.deduction_fields = [
+        self.deduction_sources = [
             self.medical_expenses, 
             self.taxes_paid, 
             self.interest_paid, 
@@ -136,23 +177,20 @@ class FederalIncomeHandler:
             self.casualty_losses, 
             self.miscellaneous_expenses, 
         ]
-        for i in self.deduction_fields:
-            if type(i) is not int and type(i) is not float:
+        for i in self.deduction_sources:
+            if type(i) not in (int, float):
                 raise TypeError(f"Unsupported deduction type {type(i)} for deduction {i}")
         
         # TODO: Perform any other value validation on incomes. Some may be negative, but those that must be positive should be checked.
-        self.total_income = sum(self.incomes_towards_agi)
-        self.allowable_itemized_deductions = sum(self.deduction_fields)
+        self.allowable_itemized_deductions = sum(self.deduction_sources)
 
         if self.use_standard_deduction:
             self.deduction_taken = self.standard_deduction
-
-            
         else:
             self.deduction_taken = self.allowable_itemized_deductions
 
         # Taxable Iincome Before Qualified Business Income Deduction 
-        self.taxable_income_before_qbid = self.total_income - self.deduction_taken
+        self.taxable_income_before_qbid = self.adjusted_gross_income - self.deduction_taken
 
         self.taxable_income = self.taxable_income_before_qbid - self.qbid
     
@@ -165,6 +203,7 @@ class FederalIncomeHandler:
             self.tax_year == other.tax_year and
             self.dependents == other.dependents and
             self.use_standard_deduction == other.use_standard_deduction and
+            # Income
             self.salaries_and_wages == other.salaries_and_wages and
             self.interest_income == other.interest_income and
             self.tax_exempt_interest == other.tax_exempt_interest and
@@ -184,7 +223,19 @@ class FederalIncomeHandler:
             self.unemployment_compensation == other.unemployment_compensation and
             self.taxable_social_security == other.taxable_social_security and
             self.other_income == other.other_income and
+            # LTCG
             self.long_term_capital_gains == other.long_term_capital_gains and
+            # Adjustments
+            self.moving_expenses == other.moving_expenses and
+            self.deductible_self_employment_tax == other.deductible_self_employment_tax and
+            self.sep_simple_qualified_plans_deductions == other.sep_simple_qualified_plans_deductions and
+            self.self_employment_health_insurance == other.self_employment_health_insurance and
+            self.penalty_early_withdrawal_savings == other.penalty_early_withdrawal_savings and
+            self.alimony_paid == other.alimony_paid and
+            self.ira_deductions == other.ira_deductions and
+            self.student_loan_interest == other.student_loan_interest and
+            self.other_adjustments == other.other_adjustments and
+            # Deductions
             self.medical_expenses == other.medical_expenses and
             self.taxes_paid == other.taxes_paid and
             self.interest_paid == other.interest_paid and
@@ -201,6 +252,7 @@ class FederalIncomeHandler:
             f"Tax Year: {self.tax_year}\n"
             f"Filing Status: {self.filing_status}\n"
             f"Dependents: {self.dependents}\n"
+            # Income
             f"Use Standard Deduction: {self.use_standard_deduction}\n"
             f"Salaries and Wages: {self.salaries_and_wages}\n"
             f"Interest Income: {self.interest_income}\n"
@@ -221,7 +273,19 @@ class FederalIncomeHandler:
             f"Unemployment Compensation: {self.unemployment_compensation}\n"
             f"Taxable Social Security: {self.taxable_social_security}\n"
             f"Other Income: {self.other_income}\n"
+            # LTCG
             f"Long Term Capital Gains: {self.long_term_capital_gains}\n"
+            # Adjustments
+            f"Moving Expenses: {self.moving_expenses}\n",
+            f"Deductible Self-Employment Tax: {self.deductible_self_employment_tax}\n",
+            f"SEP/SIMPLE/Qualified Plans Deductions: {self.sep_simple_qualified_plans_deductions}\n",
+            f"Self-Employment Health Insurance: {self.self_employment_health_insurance}\n",
+            f"Penalty on Early Withdrawal of Savings: {self.penalty_early_withdrawal_savings}\n",
+            f"Alimony Paid: {self.alimony_paid}\n",
+            f"IRA Deductions: {self.ira_deductions}\n",
+            f"Student Loan Interest: {self.student_loan_interest}\n",
+            f"Other Adjustments: {self.other_adjustments}\n"
+            # Deductions
             f"Medical Expenses: {self.medical_expenses}\n"
             f"Taxes Paid: {self.taxes_paid}\n"
             f"Interest Paid: {self.interest_paid}\n"
@@ -248,6 +312,7 @@ class FederalIncomeHandler:
             "filing_status": "REPLACE",
             "dependents": 0,
             "use_standard_deduction": True,
+            # Income
             "salaries_and_wages": 0,
             "interest_income": 0,
             "tax_exempt_interest": 0,
@@ -267,7 +332,19 @@ class FederalIncomeHandler:
             "unemployment_compensation": 0,
             "taxable_social_security": 0,
             "other_income": 0,
+            # LTCG
             "long_term_capital_gains": 0,
+            # Adjustments
+            "moving_expenses": 0,
+            "deductible_self_employment_tax": 0,
+            "sep_simple_qualified_plans_deductions": 0,
+            "self_employment_health_insurance": 0,
+            "penalty_early_withdrawal_savings": 0,
+            "alimony_paid": 0,
+            "ira_deductions": 0,
+            "student_loan_interest": 0,
+            "other_adjustments": 0,
+            # Deductions
             "medical_expenses": 0,
             "taxes_paid": 0,
             "interest_paid": 0,

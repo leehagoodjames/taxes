@@ -10,23 +10,23 @@ from ..income.FederalIncomeHandler import FederalIncomeHandler
 
 class TaxHandler:
 
-    def __init__(self, tax_year: int, filing_status: str, state: str, incomes: list[dict], state_data = None, deductions = None):
+    def __init__(self, tax_year: int, filing_status: str, state: str, incomes_adjustments_and_deductions: list[dict], state_data = None):
         """Create a TaxHandler object.
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
-        filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
+        filing_status: str - The type of filling (Married Filing Jointly, Single, etc)
         state: str - The state that you will be filing. TODO: Support more than 1 state
-        incomes: list[dict] - List of dicts of income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
+        incomes_adjustments_and_deductions: list[dict] - List of dicts of income for each person in a household.
+         If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         state_data: dict - information relevant to the selected state 
-        deductions: dict - information relevant to Deductions
         """
         
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
         InputValidator.validate_state(state)
 
-        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(d | {'tax_year': tax_year, 'filing_status': filing_status}) for d in incomes]
+        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status}) for i in incomes_adjustments_and_deductions]
 
         self.tax_year = tax_year
         self.filing_status = filing_status

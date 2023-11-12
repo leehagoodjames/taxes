@@ -14,7 +14,7 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
-        filing_status: str - The type of filling (Married Filling Jointly, Single, etc)
+        filing_status: str - The type of filling (Married Filing Jointly, Single, etc)
         federalIncomeHandlers: list[FederalIncomeHandler] - List of FederalIncomeHandler objects
         incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
@@ -46,10 +46,10 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
             deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
             self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
 
-            if self.filing_status == "Married_Filling_Jointly":
+            if self.filing_status == "Married_Filing_Jointly":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax # Doesn't need to be used, LTCG are zero
-            elif self.filing_status == "Married_Filling_separately":
+            elif self.filing_status == "Married_Filing_separately":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2023_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_separately_2023_tax
             else:
@@ -60,10 +60,10 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
             deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
             self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
 
-            if self.filing_status == "Married_Filling_Jointly":
+            if self.filing_status == "Married_Filing_Jointly":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-            elif self.filing_status == "Married_Filling_separately":
+            elif self.filing_status == "Married_Filing_separately":
                 self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2022_tax
                 self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_separately_2022_tax 
             else:

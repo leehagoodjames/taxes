@@ -1,7 +1,7 @@
 from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
 
 SUPPORTED_TAX_YEAR = 2023
-SUPPORTED_FILING_STATUS = "Married_Filling_Jointly"
+SUPPORTED_FILING_STATUS = "Married_Filing_Jointly"
 SUPPORTED_STATE = "Georgia"
 SUPPORTED_STATE_DATA = {'exemptions': 0 }
 SUPPORTED_SALARY_AND_WAGES_1 = 150000
