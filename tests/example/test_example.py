@@ -1,5 +1,6 @@
 # Standard Library Imports
 import unittest
+import json
 
 # Third Party Imports
 from src.easytax.handler import TaxHandler
@@ -39,6 +40,7 @@ class TestExample(unittest.TestCase):
 
         taxHandler.calculate_taxes()
         taxHandler.display_tax_summary()
+        print(json.dumps(taxHandler.summary_json(), indent=4))
 
 
 if __name__ == '__main__':

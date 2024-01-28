@@ -70,4 +70,16 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
         except AttributeError as e:
             raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")
         return
-            
+
+
+    def summary_json(self):
+
+        try:
+            return {
+                    'taxable_incomes': self.taxable_incomes,
+                    'long_term_capital_gains': self.long_term_capital_gains,
+                    'income_tax_owed': self.income_tax_owed,
+                    'long_term_capital_gains_tax_owed': self.long_term_capital_gains_tax_owed
+                }
+        except AttributeError as e:
+            raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")

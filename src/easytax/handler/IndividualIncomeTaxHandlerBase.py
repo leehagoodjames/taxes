@@ -48,4 +48,14 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
         except AttributeError as e:
             raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")
         return
-            
+
+
+    def summary_json(self):
+
+        try:
+            return {
+                    'taxable_incomes': self.taxable_incomes,
+                    'income_tax_owed': self.income_tax_owed,
+                }
+        except AttributeError as e:
+            raise AttributeError(f"{e}. Ensure you call 'calculate_taxes' before attempting to call this method.")

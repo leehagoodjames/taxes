@@ -1,3 +1,6 @@
+# Standard Library Imports
+import json
+
 # Third Party Imports
 from easytax.handler import TaxHandler
 
@@ -30,3 +33,4 @@ taxHandler = TaxHandler.TaxHandler(
 
 taxHandler.calculate_taxes()
 taxHandler.display_tax_summary()
+print(json.dumps(taxHandler.summary_json(), indent=4))

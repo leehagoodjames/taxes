@@ -98,4 +98,22 @@ class TaxHandler:
         except AttributeError as e:
             raise AttributeError(f"{e} Ensure you call 'calculate_taxes' on relevant Handlers")
         return
-            
+
+
+    def summary_json(self):
+        
+        try:
+            federal_summary = self.federalHander.summary_json()
+            social_security_summary = self.socialSecurityTaxHandler.summary_json()
+            medicare_summary = self.medicareTaxHandler.summary_json()
+            state_summary = self.stateTaxHandler.summary_json()
+            total_tax_owed = self.total_tax
+            return {
+                'federal': federal_summary,
+                'social_security': social_security_summary,
+                'medicare': medicare_summary,
+                'state': state_summary,
+                'total_tax_owed': total_tax_owed
+            }
+        except AttributeError as e:
+            raise AttributeError(f"{e} Ensure you call 'calculate_taxes' on relevant Handlers")
