@@ -105,14 +105,14 @@ class FederalIncomeHandler:
         if self.tax_year == 2023: 
             if self.filing_status == "Married_Filing_Jointly":
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction
-            elif self.filing_status == "Married_Filing_separately":
+            elif self.filing_status == "Married_Filing_Separately":
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2023_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
             if self.filing_status == "Married_Filing_Jointly":
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction
-            elif self.filing_status == "Married_Filing_separately":
+            elif self.filing_status == "Married_Filing_Separately":
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2022_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
@@ -184,6 +184,9 @@ class FederalIncomeHandler:
         # TODO: Perform any other value validation on incomes. Some may be negative, but those that must be positive should be checked.
         self.allowable_itemized_deductions = sum(self.deduction_sources)
 
+        # handle the fact that not all pre-tax contributions are tax-deductible, such as IRA contributions if you are, or are not, covered by a retirement plan at work and make above a certain amount
+        # https://www.irs.gov/retirement-plans/2023-ira-deduction-limits-effect-of-modified-agi-on-deduction-if-you-are-covered-by-a-retirement-plan-at-work
+        # https://www.irs.gov/retirement-plans/2023-ira-deduction-limits-effect-of-modified-agi-on-deduction-if-you-are-not-covered-by-a-retirement-plan-at-work
         if self.use_standard_deduction:
             self.deduction_taken = self.standard_deduction
         else:

@@ -51,7 +51,7 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.taxable_incomes))]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(sum(self.long_term_capital_gains))]
         
-        elif self.filing_status == "Married_Filing_separately":
+        elif self.filing_status == "Married_Filing_Separately":
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
         else:
