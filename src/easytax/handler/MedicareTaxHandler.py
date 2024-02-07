@@ -19,7 +19,8 @@ class MedicareIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         InputValidator.validate_tax_year(tax_year)
         
         self.tax_year = tax_year
-        self.taxable_incomes = [f.taxable_income for f in federalIncomeHandlers]
+        # Medicare taxes are only on salaries and wages.
+        self.taxable_incomes = [f.salaries_and_wages for f in federalIncomeHandlers]
         self.tax_name = "Medicare"
 
         if self.tax_year == 2023: 
@@ -27,7 +28,7 @@ class MedicareIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         elif self.tax_year == 2022:
             self.income_tax_brackets = MedicareIncomeTaxBrackets.individual_2022_tax
         else:
-            raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+            raise ValueError(f"Unsupported year {self.tax_year}")
         
         return
     
