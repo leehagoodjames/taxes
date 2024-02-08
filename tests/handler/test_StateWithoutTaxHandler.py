@@ -2,7 +2,7 @@
 import unittest
 
 # Local Imports
-from src.easytax.handler import GeorgiaTaxHandler
+from src.easytax.handler import StateWithoutTaxHandler
 from src.easytax.utils.Constants import *
 from tests.utils.TestContants import *
 from src.easytax.utils.InputValidator import InputValidator
@@ -13,24 +13,22 @@ def handler_builder(
         tax_year=SUPPORTED_TAX_YEAR, 
         filing_status=SUPPORTED_FILING_STATUS, 
         federalIncomeHandlers=SUPPORTED_FEDERAL_INCOME_HANDLERS,
-        state_data=SUPPORTED_STATE_DATA):
-    return GeorgiaTaxHandler.GeorgiaTaxHandler(
+        state=SUPPORTED_STATE_WITHOUT_INCOME_TAX):
+    return StateWithoutTaxHandler.StateWithoutTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
             federalIncomeHandlers=federalIncomeHandlers,
-            state_data=state_data,
+            state=state,
         )
 
 
-class TestGeorgiaTaxHandler(unittest.TestCase):
+class TestStateWithoutTaxHandler(unittest.TestCase):
 
     def test_init_success(self):
         taxHandler = handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
-        self.assertEqual(taxHandler.taxable_incomes, [
-            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1, 
-            SUPPORTED_SALARY_AND_WAGES_2 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2]) # Georgia considers LTCG income.
+        self.assertEqual(taxHandler.taxable_incomes, [0, 0])
         self.assertEqual(taxHandler.long_term_capital_gains, [0, 0])
 
 
@@ -54,33 +52,33 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         self.assertEqual(str(cm.exception), expected_message)
 
 
-    def test_init_failure_unsupported_state_data_none(self):
-        unsupported_state_data = None # Must contain 'exemptions'
+    def test_init_failure_unsupported_state(self):
+        unsupported_state = "Georgia" # Must contain 'exemptions'
 
         with self.assertRaises(ValueError) as cm:
-            _ = handler_builder(state_data=unsupported_state_data)
+            _ = handler_builder(state=unsupported_state)
 
-        expected_message = f"invalid value for 'state_data': {unsupported_state_data}"
+        expected_message = f"state must be in STATES_WITHOUT_INCOME_TAX: {InputValidator.alphabetize_set(STATES_WITHOUT_INCOME_TAX)}, got: {unsupported_state}"
         self.assertEqual(str(cm.exception), expected_message)
 
 
-    def test_init_failure_unsupported_state_data_empty(self):
-        unsupported_state_data = {} # Must contain 'exemptions'
+    def test_init_failure_unsupported_state_empty(self):
+        unsupported_state = "" # Must be non-empty
 
         with self.assertRaises(ValueError) as cm:
-            _ = handler_builder(state_data=unsupported_state_data)
+            _ = handler_builder(state=unsupported_state)
 
-        expected_message = f"state_data specified invalid value for 'exemptions': None"
+        expected_message = f"state must be in STATES_WITHOUT_INCOME_TAX: {InputValidator.alphabetize_set(STATES_WITHOUT_INCOME_TAX)}, got: {unsupported_state}"
         self.assertEqual(str(cm.exception), expected_message)
 
 
-    def test_init_failure_unsupported_state_data_exemptions_type(self):
-        unsupported_state_data = {'exemptions': 1.0} # Must be an integer
+    def test_init_failure_unsupported_state_none(self):
+        unsupported_state = None
 
-        with self.assertRaises(TypeError) as cm:
-            _ = handler_builder(state_data=unsupported_state_data)
+        with self.assertRaises(ValueError) as cm:
+            _ = handler_builder(state=unsupported_state)
 
-        expected_message = f"state_data specified invalid type for 'exemptions': {type(unsupported_state_data.get('exemptions'))}"
+        expected_message = f"state must be in STATES_WITHOUT_INCOME_TAX: {InputValidator.alphabetize_set(STATES_WITHOUT_INCOME_TAX)}, got: {unsupported_state}"
         self.assertEqual(str(cm.exception), expected_message)
 
 
@@ -88,8 +86,8 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         taxHandler = handler_builder()
         taxHandler.calculate_taxes()
         
-        self.assertEqual(taxHandler.income_tax_owed, [19890])
-        self.assertEqual(taxHandler.long_term_capital_gains_tax_owed, [0]) # Georgia considers LTCG income.
+        self.assertEqual(taxHandler.income_tax_owed, [0])
+        self.assertEqual(taxHandler.long_term_capital_gains_tax_owed, [0])
 
 
     def test_display_tax_summary_success(self):
@@ -107,7 +105,7 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         with self.assertRaises(AttributeError) as cm:
             taxHandler.display_tax_summary()
 
-        expected_message = "'GeorgiaTaxHandler' object has no attribute 'income_tax_owed'. Ensure you call 'calculate_taxes' before attempting to call this method."
+        expected_message = "'StateWithoutTaxHandler' object has no attribute 'income_tax_owed'. Ensure you call 'calculate_taxes' before attempting to call this method."
         self.assertEqual(str(cm.exception), expected_message)
 
 

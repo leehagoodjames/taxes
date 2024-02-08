@@ -1,12 +1,14 @@
 
 # Local Imports
+from ..utils.Constants import *
+from ..utils.Logger import logger
+from ..utils.InputValidator import InputValidator
+from ..income.FederalIncomeHandler import FederalIncomeHandler
 from .FederalTaxHandler import FederalTaxHandler
 from .GeorgiaTaxHandler import GeorgiaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
-from ..utils.Logger import logger
-from ..utils.InputValidator import InputValidator
-from ..income.FederalIncomeHandler import FederalIncomeHandler
+from .StateWithoutTaxHandler import StateWithoutTaxHandler
 
 class TaxHandler:
 
@@ -38,6 +40,13 @@ class TaxHandler:
             filing_status=filing_status, 
             federalIncomeHandlers=self.federalIncomeHandlers,
             state_data = state_data,
+        )
+        elif self.state in STATES_WITHOUT_INCOME_TAX:
+            self.stateTaxHandler = StateWithoutTaxHandler(
+            tax_year=tax_year, 
+            filing_status=filing_status, 
+            federalIncomeHandlers=self.federalIncomeHandlers,
+            region = self.state,
         )
         else:
             raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}, and state {self.state}")

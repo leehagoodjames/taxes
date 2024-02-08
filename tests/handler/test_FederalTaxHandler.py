@@ -5,6 +5,7 @@ import unittest
 from src.easytax.handler import FederalTaxHandler
 from src.easytax.utils.Constants import *
 from tests.utils.TestContants import *
+from src.easytax.utils.InputValidator import InputValidator
 
 
 # Creates a TaxHandler that defaults to supported values
@@ -29,13 +30,14 @@ class TestFederalTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.taxable_incomes, [SUPPORTED_SALARY_AND_WAGES_1, SUPPORTED_SALARY_AND_WAGES_2])
         self.assertEqual(taxHandler.long_term_capital_gains, [SUPPORTED_LONG_TERM_CAPITAL_GAINS_1, SUPPORTED_LONG_TERM_CAPITAL_GAINS_2])
 
+
     def test_init_failure_unsupported_tax_year(self):
         tax_year = 2020 # Unsupported year
 
         with self.assertRaises(ValueError) as cm:
             _ = handler_builder(tax_year=tax_year)
 
-        expected_message = f"tax_year must be in SUPPORTED_TAX_YEARS: {SUPPORTED_TAX_YEARS}, got: {tax_year}"
+        expected_message = f"tax_year must be in SUPPORTED_TAX_YEARS: {InputValidator.alphabetize_set(SUPPORTED_TAX_YEARS)}, got: {tax_year}"
         self.assertEqual(str(cm.exception), expected_message)
 
 
@@ -45,7 +47,7 @@ class TestFederalTaxHandler(unittest.TestCase):
         with self.assertRaises(ValueError) as cm:
             _ = handler_builder(filing_status=filing_status)
 
-        expected_message = f"filing_status must be in SUPPORTED_FILING_STATUSES: {SUPPORTED_FILING_STATUSES}, got: {filing_status}"
+        expected_message = f"filing_status must be in SUPPORTED_FILING_STATUSES: {InputValidator.alphabetize_set(SUPPORTED_FILING_STATUSES)}, got: {filing_status}"
         self.assertEqual(str(cm.exception), expected_message)
 
 
