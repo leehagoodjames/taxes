@@ -46,7 +46,7 @@ class TaxHandler:
             tax_year=tax_year, 
             filing_status=filing_status, 
             federalIncomeHandlers=self.federalIncomeHandlers,
-            region = self.state,
+            state = self.state,
         )
         else:
             raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}, and state {self.state}")
