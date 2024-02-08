@@ -6,7 +6,7 @@ SUPPORTED_STATES = {
     "Georgia",
     "New Hampshire",
     "Nevada",
-    "South Dakota"
+    "South Dakota",
     "Tennessee",
     "Texas",
     # "Washington", Excluding Washington because they have a 7% capital gains tax
