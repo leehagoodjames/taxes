@@ -1,6 +1,7 @@
 
 # Local Imports
 from ..utils.Logger import logger
+from ..utils.Constants import *
 
 
 # Each handler can have its own AGI / MAGI
@@ -43,15 +44,17 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
             raise TypeError(f"Subclass must define class attribute 'long_term_capital_gains_tax_brackets'")
         if self.region is None:
             raise TypeError(f"Subclass must define class attribute 'region'")
+        if len(self.taxable_incomes) != len(self.long_term_capital_gains):
+            raise ValueError(f"Subclass cannot have '{len(self.taxable_incomes)}' taxable_incomes and '{len(self.long_term_capital_gains)}' long_term_capital_gains. Number of people reporting each must be equal")
 
 
     def calculate_taxes(self):
 
-        if self.filing_status == "Married_Filing_Jointly":
+        if self.filing_status == MARRIED_FILING_JOINTLY:
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.taxable_incomes))]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(sum(self.long_term_capital_gains))]
         
-        elif self.filing_status == "Married_Filing_Separately":
+        elif self.filing_status == MARRIED_FILING_SEPARATELY:
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
             self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
         else:

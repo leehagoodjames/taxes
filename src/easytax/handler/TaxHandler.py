@@ -28,7 +28,7 @@ class TaxHandler:
         InputValidator.validate_filing_status(filing_status)
         InputValidator.validate_state(state)
 
-        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status}) for i in incomes_adjustments_and_deductions]
+        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status, 'earners': len(incomes_adjustments_and_deductions)}) for i in incomes_adjustments_and_deductions]
 
         self.tax_year = tax_year
         self.filing_status = filing_status

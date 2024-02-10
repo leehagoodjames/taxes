@@ -5,6 +5,7 @@ from ..brackets import FederalLongTermCapitalGainsTaxBrackets
 from . import RegionalTaxHandlerBase
 from ..utils.InputValidator import InputValidator
 from ..income.FederalIncomeHandler import FederalIncomeHandler
+from ..utils.Constants import *
 
 
 # Each handler can have its own AGI / MAGI
@@ -21,9 +22,6 @@ class FederalTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
 
-        # if len(incomes) != len(long_term_capital_gains):
-        #     raise ValueError(f"'incomes' must have the same length as 'long_term_capital_gains'. got lengths of {len(incomes)} and {len(long_term_capital_gains)} respectively")
-        
         self.tax_year = tax_year
         self.filing_status = filing_status
         self.total_incomes = [f.total_income for f in federalIncomeHandlers]
@@ -32,19 +30,19 @@ class FederalTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.region = "Federal"
 
         if self.tax_year == 2023: 
-            if self.filing_status == "Married_Filing_Jointly":
+            if self.filing_status == MARRIED_FILING_JOINTLY:
                 self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_jointly_2023_tax
                 self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2023_tax
-            elif self.filing_status == "Married_Filing_Separately":
+            elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_separately_2023_tax
                 self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_separately_2023_tax
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
-            if self.filing_status == "Married_Filing_Jointly":
+            if self.filing_status == MARRIED_FILING_JOINTLY:
                 self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax
                 self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-            elif self.filing_status == "Married_Filing_Separately":
+            elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_separately_2022_tax
                 self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_separately_2022_tax
             else:

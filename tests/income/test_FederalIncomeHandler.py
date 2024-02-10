@@ -15,6 +15,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
         federalIncomeHandler = FederalIncomeHandler(
             filing_status=SUPPORTED_FILING_STATUS,
             tax_year=SUPPORTED_TAX_YEAR,
+            earners=SUPPORTED_EARNERS,
             salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
             long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
             taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
@@ -30,6 +31,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
         federalIncomeHandler = FederalIncomeHandler(
             filing_status=SUPPORTED_FILING_STATUS,
             tax_year=SUPPORTED_TAX_YEAR,
+            earners=1,
             salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
             taxes_paid=SUPPORTED_TAXES_PAID,
             charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
@@ -38,11 +40,26 @@ class TestFederalIncomeHandler(unittest.TestCase):
         self.assertEqual(federalIncomeHandler.deduction_taken, 27700) # Standard deduction
         self.assertEqual(federalIncomeHandler.total_income, SUPPORTED_SALARY_AND_WAGES_1)
         self.assertEqual(federalIncomeHandler.taxable_income, SUPPORTED_SALARY_AND_WAGES_1 - 27700)
+
+    def test_standard_deduction_two_earners(self):
+        federalIncomeHandler = FederalIncomeHandler(
+            filing_status=SUPPORTED_FILING_STATUS,
+            tax_year=SUPPORTED_TAX_YEAR,
+            earners=2,
+            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
+            taxes_paid=SUPPORTED_TAXES_PAID,
+            charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
+            use_standard_deduction=True,
+        )
+        self.assertEqual(federalIncomeHandler.deduction_taken, 27700 / 2) # Standard deduction
+        self.assertEqual(federalIncomeHandler.total_income, SUPPORTED_SALARY_AND_WAGES_1)
+        self.assertEqual(federalIncomeHandler.taxable_income, SUPPORTED_SALARY_AND_WAGES_1 - (27700 / 2) )
         
     def test_itemized_deduction(self):
         federalIncomeHandler = FederalIncomeHandler(
             filing_status=SUPPORTED_FILING_STATUS,
             tax_year=SUPPORTED_TAX_YEAR,
+            earners=SUPPORTED_EARNERS,
             salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
             taxes_paid=SUPPORTED_TAXES_PAID,
             charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
@@ -57,6 +74,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
         federalIncomeHandler1 = FederalIncomeHandler(
             filing_status=SUPPORTED_FILING_STATUS,
             tax_year=SUPPORTED_TAX_YEAR,
+            earners=SUPPORTED_EARNERS,
             salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
             long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
             taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
@@ -64,6 +82,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
         federalIncomeHandler2 = FederalIncomeHandler(
             filing_status=SUPPORTED_FILING_STATUS,
             tax_year=SUPPORTED_TAX_YEAR,
+            earners=SUPPORTED_EARNERS,
             salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
             long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
             taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
@@ -74,11 +93,12 @@ class TestFederalIncomeHandler(unittest.TestCase):
     def test_from_dict(self):
         # Instantiate using the __init__ method with unique values for each field
         federalIncomeHandler1 = FederalIncomeHandler(
-            filing_status="Married_Filing_Jointly",
+            filing_status=MARRIED_FILING_JOINTLY,
             tax_year=2022,
+            earners=SUPPORTED_EARNERS,
             dependents=1,
             use_standard_deduction=True,
-            salaries_and_wages=0,
+            salaries_and_wages=100000, # $100K
             interest_income=100,
             tax_exempt_interest=200,
             dividend_income=300,
@@ -118,11 +138,12 @@ class TestFederalIncomeHandler(unittest.TestCase):
 
         # Create a dictionary with the same values
         data = {
-            "filing_status": "Married_Filing_Jointly",
+            "filing_status": MARRIED_FILING_JOINTLY,
             "tax_year": 2022,
+            "earners": SUPPORTED_EARNERS,
             "dependents": 1,
             "use_standard_deduction": True,
-            "salaries_and_wages": 0,
+            "salaries_and_wages": 100000, # $100K
             "interest_income": 100,
             "tax_exempt_interest": 200,
             "dividend_income": 300,
