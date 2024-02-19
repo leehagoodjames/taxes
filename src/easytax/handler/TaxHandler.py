@@ -28,7 +28,7 @@ class TaxHandler:
         InputValidator.validate_filing_status(filing_status)
         InputValidator.validate_state(state)
 
-        self.federalIncomeHandlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status, 'earners': len(incomes_adjustments_and_deductions)}) for i in incomes_adjustments_and_deductions]
+        self.federal_income_handlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status, 'earners': len(incomes_adjustments_and_deductions)}) for i in incomes_adjustments_and_deductions]
 
         self.tax_year = tax_year
         self.filing_status = filing_status
@@ -38,14 +38,14 @@ class TaxHandler:
             self.stateTaxHandler = GeorgiaTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            federalIncomeHandlers=self.federalIncomeHandlers,
+            federal_income_handlers=self.federal_income_handlers,
             state_data = state_data,
         )
         elif self.state in STATES_WITHOUT_INCOME_TAX:
             self.stateTaxHandler = StateWithoutTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            federalIncomeHandlers=self.federalIncomeHandlers,
+            federal_income_handlers=self.federal_income_handlers,
             state = self.state,
         )
         else:
@@ -54,15 +54,15 @@ class TaxHandler:
         self.federalHander = FederalTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            federalIncomeHandlers=self.federalIncomeHandlers,
+            federal_income_handlers=self.federal_income_handlers,
         )
         self.socialSecurityTaxHandler = SocialSecurityIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            federalIncomeHandlers=self.federalIncomeHandlers,
+            federal_income_handlers=self.federal_income_handlers,
         )
         self.medicareTaxHandler = MedicareIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            federalIncomeHandlers=self.federalIncomeHandlers,
+            federal_income_handlers=self.federal_income_handlers,
         )
         self.calculate_taxes()
         self.compute_total_tax()

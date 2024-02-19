@@ -10,13 +10,13 @@ from ..utils.Constants import *
 
 # Each handler can have its own AGI / MAGI
 class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
-    def __init__(self, tax_year: int, filing_status: str, federalIncomeHandlers: list[FederalIncomeHandler], state_data: dict):
+    def __init__(self, tax_year: int, filing_status: str, federal_income_handlers: list[FederalIncomeHandler], state_data: dict):
         """Create a GeorgiaTaxHandler object.
 
         Keyword arguments:
         tax_year: int - The year for tax filling. 
         filing_status: str - The type of filling (Married Filing Jointly, Single, etc)
-        federalIncomeHandlers: list[FederalIncomeHandler] - List of FederalIncomeHandler objects
+        federal_income_handlers: list[FederalIncomeHandler] - List of FederalIncomeHandler objects
         incomes: list[float] - List of the total income for each person in a household. If one person has muliplte W2s, the income on each W2 should be summed together to a single integer for that person's income.
         long_term_capital_gains: list[float] - The total long term capital gains for each person in the household.
         state_data: dict - Inputs relevant to Georiga
@@ -38,8 +38,8 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.region = "Georgia"
 
         # The state of Georgia treats long term capital gains as taxable income
-        self.taxable_income_before_dependents_and_exmptions = [f.taxable_income + f.long_term_capital_gains for f in federalIncomeHandlers]
-        self.long_term_capital_gains = [0 for _ in federalIncomeHandlers]
+        self.taxable_income_before_dependents_and_exmptions = [f.taxable_income + f.long_term_capital_gains for f in federal_income_handlers]
+        self.long_term_capital_gains = [0 for _ in federal_income_handlers]
 
         if self.tax_year == 2023: 
             # TODO: Fix this deduction logic

@@ -35,7 +35,7 @@ class TestTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
         self.assertEqual(taxHandler.state, SUPPORTED_STATE)
-        self.assertEqual(taxHandler.federalIncomeHandlers, SUPPORTED_FEDERAL_INCOME_HANDLERS)
+        self.assertEqual(taxHandler.federal_income_handlers, SUPPORTED_FEDERAL_INCOME_HANDLERS)
 
 
     def test_init_failure_unsupported_tax_year(self):

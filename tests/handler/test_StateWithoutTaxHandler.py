@@ -12,12 +12,12 @@ from src.easytax.utils.InputValidator import InputValidator
 def handler_builder(
         tax_year=SUPPORTED_TAX_YEAR, 
         filing_status=SUPPORTED_FILING_STATUS, 
-        federalIncomeHandlers=SUPPORTED_FEDERAL_INCOME_HANDLERS,
+        federal_income_handlers=SUPPORTED_FEDERAL_INCOME_HANDLERS,
         state=SUPPORTED_STATE_WITHOUT_INCOME_TAX):
     return StateWithoutTaxHandler.StateWithoutTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
-            federalIncomeHandlers=federalIncomeHandlers,
+            federal_income_handlers=federal_income_handlers,
             state=state,
         )
 
