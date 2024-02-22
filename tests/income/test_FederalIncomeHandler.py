@@ -7,18 +7,103 @@ from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
 from tests.utils.TestContants import *
 
 
+# Creates a FederalIncomeHandler that defaults to supported values
+def federal_income_handler_builder(
+                filing_status: str = SUPPORTED_FILING_STATUS,
+                tax_year: int = SUPPORTED_TAX_YEAR,
+                dependents: int = 0,
+                use_standard_deduction: bool = True,
+                # Income
+                salaries_and_wages: float = SUPPORTED_SALARY_AND_WAGES_1, 
+                interest_income: float = 0, 
+                tax_exempt_interest: float = 0, 
+                dividend_income: float = 0, 
+                qualified_dividend_income: float = 0, 
+                taxable_state_local_refunds: float = 0, 
+                alimony_received: float = 0, 
+                business_income_or_loss: float = 0, 
+                capital_gain_or_loss: float = 0, 
+                other_gains_or_losses: float = 0, 
+                taxable_ira_distributions: float = 0, 
+                taxable_pensions: float = SUPPORTED_TAXABLE_PENSIONS_1, 
+                rent_royalty_income: float = 0, 
+                partnership_or_s_corp_income: float = 0, 
+                estate_trust_income: float = 0, 
+                farm_income_or_loss: float = 0, 
+                unemployment_compensation: float = 0, 
+                taxable_social_security: float = 0, 
+                other_income: float = 0,
+                # LTCG
+                long_term_capital_gains: float = SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
+                # Income Adjustments
+                moving_expenses: float = 0,
+                deductible_self_employment_tax: float = 0,
+                sep_simple_qualified_plans_deductions: float = 0,
+                self_employment_health_insurance: float = 0,
+                penalty_early_withdrawal_savings: float = 0,
+                alimony_paid: float = 0,
+                ira_deductions: float = 0,
+                student_loan_interest: float = 0,
+                other_adjustments: float = 0,
+                # Deductions
+                medical_expenses: float = 0,
+                taxes_paid: float = 0,
+                interest_paid: float = 0,
+                charitable_contributions: float = 0,
+                casualty_losses: float = 0,
+                miscellaneous_expenses: float = 0,
+                qbid: float = 0,
+        ):
+    return FederalIncomeHandler(
+            filing_status=filing_status,
+            tax_year=tax_year,
+            dependents=dependents,
+            use_standard_deduction=use_standard_deduction,
+            salaries_and_wages=salaries_and_wages,
+            interest_income=interest_income,
+            tax_exempt_interest=tax_exempt_interest,
+            dividend_income=dividend_income,
+            qualified_dividend_income=qualified_dividend_income,
+            taxable_state_local_refunds=taxable_state_local_refunds,
+            alimony_received=alimony_received,
+            business_income_or_loss=business_income_or_loss,
+            capital_gain_or_loss=capital_gain_or_loss,
+            other_gains_or_losses=other_gains_or_losses,
+            taxable_ira_distributions=taxable_ira_distributions,
+            taxable_pensions=taxable_pensions,
+            rent_royalty_income=rent_royalty_income,
+            partnership_or_s_corp_income=partnership_or_s_corp_income,
+            estate_trust_income=estate_trust_income,
+            farm_income_or_loss=farm_income_or_loss,
+            unemployment_compensation=unemployment_compensation,
+            taxable_social_security=taxable_social_security,
+            other_income=other_income,
+            long_term_capital_gains=long_term_capital_gains,
+            moving_expenses=moving_expenses,
+            deductible_self_employment_tax=deductible_self_employment_tax,
+            sep_simple_qualified_plans_deductions=sep_simple_qualified_plans_deductions,
+            self_employment_health_insurance=self_employment_health_insurance,
+            penalty_early_withdrawal_savings=penalty_early_withdrawal_savings,
+            alimony_paid=alimony_paid,
+            ira_deductions=ira_deductions,
+            student_loan_interest=student_loan_interest,
+            other_adjustments=other_adjustments,
+            medical_expenses=medical_expenses,
+            taxes_paid=taxes_paid,
+            interest_paid=interest_paid,
+            charitable_contributions=charitable_contributions,
+            casualty_losses=casualty_losses,
+            miscellaneous_expenses=miscellaneous_expenses,
+            qbid=qbid,
+        )
+
 
 class TestFederalIncomeHandler(unittest.TestCase):
    
 
     def test_init_success(self):
-        federalIncomeHandler = FederalIncomeHandler(
-            filing_status=SUPPORTED_FILING_STATUS,
-            tax_year=SUPPORTED_TAX_YEAR,
-            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
-            long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
-            taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
-        )
+        federalIncomeHandler = federal_income_handler_builder()
+
         self.assertEqual(federalIncomeHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(federalIncomeHandler.filing_status, SUPPORTED_FILING_STATUS)
         self.assertEqual(federalIncomeHandler.filing_status, SUPPORTED_FILING_STATUS)
@@ -27,11 +112,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
         self.assertEqual(federalIncomeHandler.taxable_pensions, SUPPORTED_TAXABLE_PENSIONS_1)
 
     def test_standard_deduction(self):
-        federalIncomeHandler = FederalIncomeHandler(
-            filing_status=SUPPORTED_FILING_STATUS,
-            tax_year=SUPPORTED_TAX_YEAR,
-            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
-            taxes_paid=SUPPORTED_TAXES_PAID,
+        federalIncomeHandler = federal_income_handler_builder(
             charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
             use_standard_deduction=True,
         )
@@ -41,10 +122,7 @@ class TestFederalIncomeHandler(unittest.TestCase):
 
         
     def test_itemized_deduction(self):
-        federalIncomeHandler = FederalIncomeHandler(
-            filing_status=SUPPORTED_FILING_STATUS,
-            tax_year=SUPPORTED_TAX_YEAR,
-            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
+        federalIncomeHandler = federal_income_handler_builder(
             taxes_paid=SUPPORTED_TAXES_PAID,
             charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
             use_standard_deduction=False,
@@ -55,20 +133,9 @@ class TestFederalIncomeHandler(unittest.TestCase):
 
 
     def test_equal(self):
-        federalIncomeHandler1 = FederalIncomeHandler(
-            filing_status=SUPPORTED_FILING_STATUS,
-            tax_year=SUPPORTED_TAX_YEAR,
-            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
-            long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
-            taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
-        )
-        federalIncomeHandler2 = FederalIncomeHandler(
-            filing_status=SUPPORTED_FILING_STATUS,
-            tax_year=SUPPORTED_TAX_YEAR,
-            salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
-            long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
-            taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
-        )
+        federalIncomeHandler1 = federal_income_handler_builder()
+        federalIncomeHandler2 = federal_income_handler_builder()
+
         self.assertEqual(federalIncomeHandler1, federalIncomeHandler2)
 
 
