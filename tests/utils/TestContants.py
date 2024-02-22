@@ -4,7 +4,6 @@ from src.easytax.utils.Constants import *
 
 SUPPORTED_TAX_YEAR = 2023
 SUPPORTED_FILING_STATUS = MARRIED_FILING_JOINTLY
-SUPPORTED_EARNERS = 2 # Married filing jointly with both people having salaries
 SUPPORTED_STATE = "Georgia"
 SUPPORTED_STATE_DATA = {'exemptions': 0 }
 SUPPORTED_SALARY_AND_WAGES_1 = 150000
@@ -31,19 +30,9 @@ SUPPORTED_FEDERAL_INCOME_HANDLERS = [
     FederalIncomeHandler(
         filing_status=SUPPORTED_FILING_STATUS,
         tax_year=SUPPORTED_TAX_YEAR,
-        earners=SUPPORTED_EARNERS,
-        salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1, 
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1,
-        taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1,
-        use_standard_deduction=False, # Simplifies examples by making deductions zero
-        ),
-    FederalIncomeHandler(
-        filing_status=SUPPORTED_FILING_STATUS,
-        tax_year=SUPPORTED_TAX_YEAR,
-        earners=SUPPORTED_EARNERS,
-        salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_2, 
-        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_2,
-        taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_2,
+        salaries_and_wages=SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_SALARY_AND_WAGES_2, 
+        long_term_capital_gains=SUPPORTED_LONG_TERM_CAPITAL_GAINS_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2,
+        taxable_pensions=SUPPORTED_TAXABLE_PENSIONS_1 + SUPPORTED_TAXABLE_PENSIONS_2,
         use_standard_deduction=False, # Simplifies examples by making deductions zero
         ),
 ]

@@ -29,9 +29,9 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
         self.assertEqual(taxHandler.taxable_incomes, [
-            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1, 
+            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1 +  
             SUPPORTED_SALARY_AND_WAGES_2 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2]) # Georgia considers LTCG income.
-        self.assertEqual(taxHandler.long_term_capital_gains, [0, 0])
+        self.assertEqual(taxHandler.long_term_capital_gains, [0])
 
 
     def test_init_failure_unsupported_tax_year(self):

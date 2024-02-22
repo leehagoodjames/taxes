@@ -8,7 +8,6 @@ class FederalIncomeHandler:
     def __init__(self,
                 filing_status: str,
                 tax_year: int,
-                earners: int, # Number of income earners to split the deduction amongst
                 dependents: int = 0,
                 use_standard_deduction: bool = True,
                 # Income
@@ -106,14 +105,14 @@ class FederalIncomeHandler:
         # Set standard Deduction
         if self.tax_year == 2023: 
             if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction / earners
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction
             elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2023_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
             if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction / earners
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction
             elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2022_deduction
             else:
@@ -197,7 +196,7 @@ class FederalIncomeHandler:
         # Taxable Income Before Qualified Business Income Deduction 
         self.taxable_income_before_qbid = self.adjusted_gross_income - self.deduction_taken
 
-        self.taxable_income = self.taxable_income_before_qbid - self.qbid
+        self.taxable_income = max(self.taxable_income_before_qbid - self.qbid, 0)
         if self.taxable_income < 0:
             raise ValueError(f"Taxable Income cannot be less than zero. Got {self.taxable_income}")
     
@@ -317,7 +316,6 @@ class FederalIncomeHandler:
         default_values = {
             "tax_year": "REPLACE",
             "filing_status": "REPLACE",
-            "earners": "REPLACE",
             "dependents": 0,
             "use_standard_deduction": True,
             # Income

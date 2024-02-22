@@ -11,11 +11,11 @@ from src.easytax.utils.InputValidator import InputValidator
 
 # Creates a TaxHandler that defaults to supported values
 def tax_handler_builder(
-        tax_year=SUPPORTED_TAX_YEAR, 
-        filing_status=SUPPORTED_FILING_STATUS, 
-        state=SUPPORTED_STATE, 
-        incomes=SUPPORTED_INCOMES,
-        state_data=SUPPORTED_STATE_DATA,
+        tax_year: int =SUPPORTED_TAX_YEAR, 
+        filing_status: str =SUPPORTED_FILING_STATUS, 
+        state: str =SUPPORTED_STATE, 
+        incomes: list[dict]=SUPPORTED_INCOMES,
+        state_data: dict=SUPPORTED_STATE_DATA,
         ):
     return TaxHandler.TaxHandler(
             tax_year=tax_year, 

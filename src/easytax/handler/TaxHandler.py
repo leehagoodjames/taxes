@@ -4,11 +4,13 @@ from ..utils.Constants import *
 from ..utils.Logger import logger
 from ..utils.InputValidator import InputValidator
 from ..income.FederalIncomeHandler import FederalIncomeHandler
+from ..income.PayrollTaxIncomeHandler import PayrollTaxIncomeHandler
 from .FederalTaxHandler import FederalTaxHandler
 from .GeorgiaTaxHandler import GeorgiaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
 from .StateWithoutTaxHandler import StateWithoutTaxHandler
+
 
 class TaxHandler:
 
@@ -28,11 +30,15 @@ class TaxHandler:
         InputValidator.validate_filing_status(filing_status)
         InputValidator.validate_state(state)
 
-        self.federal_income_handlers = [FederalIncomeHandler.from_dict(i | {'tax_year': tax_year, 'filing_status': filing_status, 'earners': len(incomes_adjustments_and_deductions)}) for i in incomes_adjustments_and_deductions]
-
         self.tax_year = tax_year
         self.filing_status = filing_status
         self.state = state
+
+        # Used for federal taxes and state 
+        self.make_federal_income_handlers(incomes_adjustments_and_deductions)
+
+        # Used for social security taxes and medicare taxes
+        self.make_payroll_income_handlers(incomes_adjustments_and_deductions)
 
         if self.state == "Georgia":
             self.stateTaxHandler = GeorgiaTaxHandler(
@@ -58,11 +64,11 @@ class TaxHandler:
         )
         self.socialSecurityTaxHandler = SocialSecurityIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            federal_income_handlers=self.federal_income_handlers,
+            federal_income_handlers=self.payroll_income_handlers,
         )
         self.medicareTaxHandler = MedicareIndividualIncomeTaxHandler(
             tax_year=tax_year, 
-            federal_income_handlers=self.federal_income_handlers,
+            federal_income_handlers=self.payroll_income_handlers,
         )
         self.calculate_taxes()
         self.compute_total_tax()
@@ -126,3 +132,31 @@ class TaxHandler:
             }
         except AttributeError as e:
             raise AttributeError(f"{e} Ensure you call 'calculate_taxes' on relevant Handlers")
+        
+    
+    # Makes federal income handlers. Handles the case when two incomes are provided for MARRIED_FILING_JOINTLY and combines them
+    def make_federal_income_handlers(self, incomes_adjustments_and_deductions: list[dict]): 
+        if self.filing_status == MARRIED_FILING_JOINTLY and len(incomes_adjustments_and_deductions) == 2:
+            # There are two earners and they need their incomes combined into a single entity
+            combined = {}
+            for k,v in incomes_adjustments_and_deductions[0].items():
+                # Check the fields that should not be summed and should be equivalent
+                if k == 'dependents':
+                    if v != incomes_adjustments_and_deductions[1][k]:
+                        raise ValueError(f"Cannot have differing number of dependents when filing status is {MARRIED_FILING_JOINTLY}. Recieved {v} and {incomes_adjustments_and_deductions[1][k]}.")
+                    combined[k] = v
+                elif k == 'use_standard_deduction':
+                    if v != incomes_adjustments_and_deductions[1][k]:
+                        raise ValueError(f"Cannot have itemized and non-itemized deductions when {MARRIED_FILING_JOINTLY}. For 'use_standard_deduction', recieved {v} and {incomes_adjustments_and_deductions[1][k]}.")
+                    combined[k] = v
+                else:
+                    # Sum the fields if they are a field that should be summed
+                    combined[k] = v + incomes_adjustments_and_deductions[1][k]
+            self.federal_income_handlers = [FederalIncomeHandler.from_dict(combined | {'tax_year': self.tax_year, 'filing_status': self.filing_status})]
+
+        else: 
+            self.federal_income_handlers = [FederalIncomeHandler.from_dict(i | {'tax_year': self.tax_year, 'filing_status': self.filing_status}) for i in incomes_adjustments_and_deductions]
+
+   # Makes payroll income handlers. 
+    def make_payroll_income_handlers(self, incomes_adjustments_and_deductions: list[dict]): 
+        self.payroll_income_handlers = [PayrollTaxIncomeHandler.from_dict({'salaries_and_wages': i['salaries_and_wages']}) for i in incomes_adjustments_and_deductions]

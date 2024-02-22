@@ -28,8 +28,8 @@ class TestStateWithoutTaxHandler(unittest.TestCase):
         taxHandler = handler_builder()
         self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
         self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
-        self.assertEqual(taxHandler.taxable_incomes, [0, 0])
-        self.assertEqual(taxHandler.long_term_capital_gains, [0, 0])
+        self.assertEqual(taxHandler.taxable_incomes, [0])
+        self.assertEqual(taxHandler.long_term_capital_gains, [0])
 
 
     def test_init_failure_unsupported_tax_year(self):
