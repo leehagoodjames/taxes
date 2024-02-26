@@ -80,6 +80,18 @@ class TestTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.medicare_tax_owed, [2175, 1450]) # ?
 
 
+    def test_calculate_taxes_married_filling_separately(self):
+        taxHandler = tax_handler_builder(filing_status=MARRIED_FILING_SEPARATELY)
+        taxHandler.calculate_taxes()
+        
+        self.assertEqual(taxHandler.federal_tax_owed, [29400.0, 17400.0])
+        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [2306.25, 0])
+        self.assertEqual(taxHandler.state_tax_owed, [11957.5, 7932.5])
+        self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0, 0])
+        self.assertEqual(taxHandler.social_security_tax_owed, [9300, 6200])
+        self.assertEqual(taxHandler.medicare_tax_owed, [2175, 1450])
+
+
     def test_display_tax_summary_success(self):
 
         # This test should simply not throw errors
