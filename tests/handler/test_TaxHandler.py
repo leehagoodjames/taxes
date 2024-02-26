@@ -73,7 +73,7 @@ class TestTaxHandler(unittest.TestCase):
         taxHandler.calculate_taxes()
         
         self.assertEqual(taxHandler.federal_tax_owed, [46800]) # 34,800
-        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [1612.5]) # 1,612.5
+        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [15000]) # All at 15% bracket
         self.assertEqual(taxHandler.state_tax_owed, [19890]) # ?
         self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0]) # ?
         self.assertEqual(taxHandler.social_security_tax_owed, [9300, 6200]) # ?
@@ -85,7 +85,7 @@ class TestTaxHandler(unittest.TestCase):
         taxHandler.calculate_taxes()
         
         self.assertEqual(taxHandler.federal_tax_owed, [29400.0, 17400.0])
-        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [2306.25, 0])
+        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [9000, 6000]) # All at 15% bracket
         self.assertEqual(taxHandler.state_tax_owed, [11957.5, 7932.5])
         self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0, 0])
         self.assertEqual(taxHandler.social_security_tax_owed, [9300, 6200])

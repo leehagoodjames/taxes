@@ -54,8 +54,16 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
         elif self.filing_status == MARRIED_FILING_JOINTLY and len(self.long_term_capital_gains) != 1:
             raise ValueError(f"Unsupported number of long_term_capital_gains for MARRIED_FILING_JOINTLY. Got '{len(self.long_term_capital_gains)}', expected: '1'")        
         elif self.filing_status in {MARRIED_FILING_JOINTLY, MARRIED_FILING_SEPARATELY}:
-            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
-            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.long_term_capital_gains]
+            self.income_tax_owed = []
+            self.long_term_capital_gains_tax_owed = []
+            for i, ltcg in zip(self.taxable_incomes, self.long_term_capital_gains):
+                self.income_tax_owed.append(self.income_tax_brackets.calculate_taxes(i))
+                # LTCG's tax brackets include the addition of taxable income plus long term capital gains.
+                # Income is only used to offset the tax brackets used for computing LTCG. This is achieved
+                # by introducing a "basis".
+                ltcg_basis = self.long_term_capital_gains_tax_brackets.calculate_taxes(i)
+                ltcg_tax = self.long_term_capital_gains_tax_brackets.calculate_taxes(i + ltcg)
+                self.long_term_capital_gains_tax_owed.append(ltcg_tax - ltcg_basis)
         else:
             raise Exception(f"Unexpected filing_status {self.filing_status}")
         return

@@ -56,7 +56,7 @@ class TestFederalTaxHandler(unittest.TestCase):
         taxHandler.calculate_taxes()
         
         self.assertEqual(taxHandler.income_tax_owed, [46800])
-        self.assertEqual(taxHandler.long_term_capital_gains_tax_owed, [1612.5]) 
+        self.assertEqual(taxHandler.long_term_capital_gains_tax_owed, [15000]) 
 
 
     def test_display_tax_summary_success(self):
