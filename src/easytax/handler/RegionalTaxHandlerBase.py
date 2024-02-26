@@ -49,14 +49,13 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
 
 
     def calculate_taxes(self):
-
-        if self.filing_status == MARRIED_FILING_JOINTLY:
-            self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(sum(self.taxable_incomes))]
-            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(sum(self.long_term_capital_gains))]
-        
-        elif self.filing_status == MARRIED_FILING_SEPARATELY:
+        if self.filing_status == MARRIED_FILING_JOINTLY and len(self.taxable_incomes) != 1:
+            raise ValueError(f"Unsupported number of incomes for MARRIED_FILING_JOINTLY. Got '{len(self.taxable_incomes)}', expected: '1'")
+        elif self.filing_status == MARRIED_FILING_JOINTLY and len(self.long_term_capital_gains) != 1:
+            raise ValueError(f"Unsupported number of long_term_capital_gains for MARRIED_FILING_JOINTLY. Got '{len(self.long_term_capital_gains)}', expected: '1'")        
+        elif self.filing_status in {MARRIED_FILING_JOINTLY, MARRIED_FILING_SEPARATELY}:
             self.income_tax_owed = [self.income_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
-            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.taxable_incomes]
+            self.long_term_capital_gains_tax_owed = [self.long_term_capital_gains_tax_brackets.calculate_taxes(i) for i in self.long_term_capital_gains]
         else:
             raise Exception(f"Unexpected filing_status {self.filing_status}")
         return
