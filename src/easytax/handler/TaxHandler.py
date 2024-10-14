@@ -128,6 +128,7 @@ class TaxHandler:
                 'social_security': social_security_summary,
                 'medicare': medicare_summary,
                 'state': state_summary,
+                # 'niit': niit_summary,
                 'total_tax_owed': total_tax_owed
             }
         except AttributeError as e:

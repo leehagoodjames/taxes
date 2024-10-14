@@ -103,11 +103,22 @@ class FederalIncomeHandler:
         self.miscellaneous_expenses = miscellaneous_expenses
 
         # Set standard Deduction
-        if self.tax_year == 2023: 
+        if self.tax_year == 2024:
+            if self.filing_status == MARRIED_FILING_JOINTLY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2024_deduction
+            elif self.filing_status == MARRIED_FILING_SEPARATELY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_separately_2024_deduction
+            elif self.filing_status == SINGLE:
+                self.standard_deduction = FederalStandardDeductions.single_filer_2024_deduction
+            else:
+                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        elif self.tax_year == 2023: 
             if self.filing_status == MARRIED_FILING_JOINTLY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2023_deduction
             elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2023_deduction
+            elif self.filing_status == SINGLE:
+                self.standard_deduction = FederalStandardDeductions.single_filer_2023_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
         elif self.tax_year == 2022:
@@ -115,6 +126,8 @@ class FederalIncomeHandler:
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2022_deduction
             elif self.filing_status == MARRIED_FILING_SEPARATELY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_separately_2022_deduction
+            elif self.filing_status == SINGLE:
+                self.standard_deduction = FederalStandardDeductions.single_filer_2022_deduction
             else:
                 raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
         else:
@@ -199,6 +212,16 @@ class FederalIncomeHandler:
         self.taxable_income = max(self.taxable_income_before_qbid - self.qbid, 0)
         if self.taxable_income < 0:
             raise ValueError(f"Taxable Income cannot be less than zero. Got {self.taxable_income}")
+        
+        # NIIT
+        niit_incomes = [
+            self.capital_gain_or_loss,
+            self.long_term_capital_gains, 
+            self.interest_income,
+            self.rent_royalty_income,
+            business_income_or_loss
+        ]
+        self.niit_income = sum(niit_incomes)
     
     def __eq__(self, other):
         if not isinstance(other, FederalIncomeHandler):

@@ -23,7 +23,9 @@ class SocialSecurityIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         self.taxable_incomes = [f.salaries_and_wages for f in federal_income_handlers]
         self.tax_name = "Social Security"
 
-        if self.tax_year == 2023: 
+        if self.tax_year == 2024: 
+            self.income_tax_brackets = SocialSecurityIncomeTaxBrackets.individual_2024_tax  
+        elif self.tax_year == 2023: 
             self.income_tax_brackets = SocialSecurityIncomeTaxBrackets.individual_2023_tax  
         elif self.tax_year == 2022:
             self.income_tax_brackets = SocialSecurityIncomeTaxBrackets.individual_2022_tax

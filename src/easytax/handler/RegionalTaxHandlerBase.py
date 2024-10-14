@@ -64,6 +64,17 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
                 ltcg_basis = self.long_term_capital_gains_tax_brackets.calculate_taxes(i)
                 ltcg_tax = self.long_term_capital_gains_tax_brackets.calculate_taxes(i + ltcg)
                 self.long_term_capital_gains_tax_owed.append(ltcg_tax - ltcg_basis)
+        elif self.filing_status == SINGLE:
+            self.income_tax_owed = []
+            self.long_term_capital_gains_tax_owed = []
+            for i, ltcg in zip(self.taxable_incomes, self.long_term_capital_gains):
+                self.income_tax_owed.append(self.income_tax_brackets.calculate_taxes(i))
+                # LTCG's tax brackets include the addition of taxable income plus long term capital gains.
+                # Income is only used to offset the tax brackets used for computing LTCG. This is achieved
+                # by introducing a "basis".
+                ltcg_basis = self.long_term_capital_gains_tax_brackets.calculate_taxes(i)
+                ltcg_tax = self.long_term_capital_gains_tax_brackets.calculate_taxes(i + ltcg)
+                self.long_term_capital_gains_tax_owed.append(ltcg_tax - ltcg_basis)
         else:
             raise Exception(f"Unexpected filing_status {self.filing_status}")
         return
