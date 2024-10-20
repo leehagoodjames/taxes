@@ -3,6 +3,7 @@ from ..base.FlatTax import FlatTax
 from ..base.FlatTaxBracket import FlatTaxBracket
 from ..utils.Constants import *
 
+
 # https://www.irs.gov/individuals/net-investment-income-tax#:~:text=In%20general%2C%20net%20investment%20income,and%20most%20self%2Demployment%20income.
 # Update as needed when the tax brackets are updated
 brackets = {year: {

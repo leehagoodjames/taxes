@@ -29,43 +29,7 @@ class FederalTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.long_term_capital_gains = [f.long_term_capital_gains for f in federal_income_handlers]
         self.region = "Federal"
 
-        if self.tax_year == 2024:
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_jointly_2024_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2024_tax
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_separately_2024_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_separately_2024_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.single_filer_2024_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.single_filer_2024_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
-        elif self.tax_year == 2023:
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_jointly_2023_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2023_tax
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_separately_2023_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_separately_2023_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.single_filer_2023_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.single_filer_2023_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
-        elif self.tax_year == 2022:
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_jointly_2022_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.married_filing_separately_2022_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.married_filing_separately_2022_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = FederalIncomeTaxBrackets.single_filer_2022_tax
-                self.long_term_capital_gains_tax_brackets = FederalLongTermCapitalGainsTaxBrackets.single_filer_2022_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
-        else:
-            raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        self.income_tax_brackets = self._get_tax_brackets(tax_year, filing_status, FederalIncomeTaxBrackets.brackets)
+        self.long_term_capital_gains_tax_brackets = self._get_tax_brackets(tax_year, filing_status, FederalLongTermCapitalGainsTaxBrackets.brackets)
         
         return

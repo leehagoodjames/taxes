@@ -2,6 +2,7 @@
 # Local Imports
 from ..utils.Logger import logger
 from ..utils.Constants import *
+from ..base.Tax import Tax
 
 
 # Each handler can have its own AGI / MAGI
@@ -30,6 +31,17 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     income_tax_brackets = None
     long_term_capital_gains_tax_brackets = None
     region = None
+
+    @staticmethod
+    def _get_tax_brackets(tax_year: int, filing_status: str, brackets: dict[int, dict[str, Tax]]):
+        if tax_year not in brackets:
+            raise ValueError(f"Unsupported tax year: {tax_year}")
+        
+        if filing_status not in brackets[tax_year]:
+            raise ValueError(f"Unsupported combination of status: {filing_status}, year {tax_year}")
+        
+        return brackets[tax_year][filing_status]
+
 
     def check_required_attributes(self):
         if self.taxable_incomes is None:
