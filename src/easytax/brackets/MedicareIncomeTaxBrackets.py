@@ -1,18 +1,27 @@
 # Local Imports
-from ..base import FlatTax
-from ..base import FlatTaxBracket
+from ..base.ProgressiveTax import ProgressiveTax
+from ..base.ProgressiveTaxBracket import ProgressiveTaxBracket
 
-# TODO: Make medicare (or additional medicare) a progressive tax. It must take into accout filing status
+# Note: Medicare and the additional medicare tax are modeled as a progressive tax. This should be mathamaticallly equivalent
 
 # 2024 Medicare Employee Rate
 # Source: https://www.irs.gov/pub/irs-pdf/p926.pdf
-individual_2024_tax = FlatTax.FlatTax(FlatTaxBracket.FlatTaxBracket(0.0145))
+# https://www.irs.gov/taxtopics/tc751
 
-# 2023 Medicare Employee Rate
-# Source: https://www.irs.gov/publications/p80#:~:text=Social%20security%20and%20Medicare%20tax%20for%202023.&text=The%20Medicare%20tax%20rate%20is,in%20cash%20wages%20in%202023.
-individual_2023_tax = FlatTax.FlatTax(FlatTaxBracket.FlatTaxBracket(0.0145))
-
-# 2022 Medicare Employee Rate
-# Source: https://www.irs.gov/publications/p80#:~:text=Social%20security%20and%20Medicare%20tax%20for%202023.&text=The%20Medicare%20tax%20rate%20is,in%20cash%20wages%20in%202023.
-individual_2022_tax = FlatTax.FlatTax(FlatTaxBracket.FlatTaxBracket(0.0145))
-
+brackets = {
+    2024: ProgressiveTax(
+        ProgressiveTaxBracket(
+        tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])
+        ),
+    2023: ProgressiveTax(
+        ProgressiveTaxBracket(
+            tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])
+        ),
+    2022: ProgressiveTax(
+        ProgressiveTaxBracket(
+            tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])
+        )
+}
