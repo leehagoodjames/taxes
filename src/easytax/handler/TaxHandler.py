@@ -1,4 +1,3 @@
-
 # Local Imports
 from ..utils.Constants import *
 from ..utils.Logger import logger
@@ -10,6 +9,7 @@ from .states.GeorgiaTaxHandler import GeorgiaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
 from .StateWithoutTaxHandler import StateWithoutTaxHandler
+from .NetInvestmentIncomeTaxHandler import NetInvestmentIncomeTaxHandler
 
 
 class TaxHandler:
@@ -70,6 +70,11 @@ class TaxHandler:
             tax_year=tax_year, 
             federal_income_handlers=self.payroll_income_handlers,
         )
+        self.netInvestmentIncomeTaxHandler = NetInvestmentIncomeTaxHandler(
+            tax_year=tax_year, 
+            filing_status=filing_status, 
+            federal_income_handlers=self.federal_income_handlers,
+        )
         self.calculate_taxes()
         self.compute_total_tax()
 
@@ -82,6 +87,7 @@ class TaxHandler:
         self.stateTaxHandler.calculate_taxes()
         self.socialSecurityTaxHandler.calculate_taxes()
         self.medicareTaxHandler.calculate_taxes()
+        self.netInvestmentIncomeTaxHandler.calculate_taxes()
 
         self.federal_tax_owed = self.federalHander.income_tax_owed
         self.federal_long_term_capital_gains_tax_owed = self.federalHander.long_term_capital_gains_tax_owed
@@ -89,6 +95,7 @@ class TaxHandler:
         self.state_long_term_capital_gains_tax_owed = self.stateTaxHandler.long_term_capital_gains_tax_owed
         self.social_security_tax_owed = self.socialSecurityTaxHandler.income_tax_owed
         self.medicare_tax_owed = self.medicareTaxHandler.income_tax_owed
+        self.niit_tax_owed = self.netInvestmentIncomeTaxHandler.income_tax_owed
         return
     
 
@@ -98,7 +105,8 @@ class TaxHandler:
             self.state_tax_owed + \
             self.state_long_term_capital_gains_tax_owed + \
             self.social_security_tax_owed + \
-            self.medicare_tax_owed)
+            self.medicare_tax_owed + \
+            self.niit_tax_owed)
         return
     
 
@@ -108,6 +116,7 @@ class TaxHandler:
             self.federalHander.display_tax_summary()
             self.socialSecurityTaxHandler.display_tax_summary()
             self.medicareTaxHandler.display_tax_summary()
+            self.netInvestmentIncomeTaxHandler.display_tax_summary()
             self.stateTaxHandler.display_tax_summary()
             logger.info(f'Total Tax Owed: ${self.total_tax:,.0f}')
         except AttributeError as e:
@@ -121,6 +130,7 @@ class TaxHandler:
             federal_summary = self.federalHander.summary_json()
             social_security_summary = self.socialSecurityTaxHandler.summary_json()
             medicare_summary = self.medicareTaxHandler.summary_json()
+            niit_summary = self.netInvestmentIncomeTaxHandler.summary_json()
             state_summary = self.stateTaxHandler.summary_json()
             total_tax_owed = self.total_tax
             return {
@@ -128,7 +138,7 @@ class TaxHandler:
                 'social_security': social_security_summary,
                 'medicare': medicare_summary,
                 'state': state_summary,
-                # 'niit': niit_summary,
+                'niit': niit_summary,
                 'total_tax_owed': total_tax_owed
             }
         except AttributeError as e:

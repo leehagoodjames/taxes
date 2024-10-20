@@ -2,6 +2,7 @@
 from ..utils.InputValidator import InputValidator
 from ..deductions import FederalStandardDeductions
 from ..utils.Constants import *
+from ..brackets.NetInvestmentIncomeTaxBrackets import threshold_amounts
 
 
 class FederalIncomeHandler:
@@ -221,7 +222,16 @@ class FederalIncomeHandler:
             self.rent_royalty_income,
             business_income_or_loss
         ]
-        self.niit_income = sum(niit_incomes)
+        # Fetch the NIIT threshold
+        niit_threshold = self._get_niit_threshold(self.tax_year, self.filing_status)
+
+        # NIIT only applies if the sum of the NIIT incomes is greater than the NIIT threshold or if the taxable income is greater than the NIIT threshold
+        if self.taxable_income >= niit_threshold:
+            # TODO: Should niit apply if sum(niit_incomes) > niit_threshold or 
+            # Choose the lesser of the sum of the NIIT incomes or the taxable income minus the NIIT threshold
+            self.niit_income = min(sum(niit_incomes), self.taxable_income - niit_threshold)
+        else:
+            self.niit_income = 0
     
     def __eq__(self, other):
         if not isinstance(other, FederalIncomeHandler):
@@ -394,3 +404,14 @@ class FederalIncomeHandler:
 
         # Create an instance of the class with the updated values
         return cls(**default_values)
+    
+    @staticmethod
+    def _get_niit_threshold(tax_year: int, filing_status: str):
+        if tax_year not in threshold_amounts:
+            raise ValueError(f"Unsupported tax year: {tax_year}")
+        
+        if filing_status not in threshold_amounts[tax_year]:
+            raise ValueError(f"Unsupported filing status: {filing_status} for tax year {tax_year}")
+
+        
+        return threshold_amounts[tax_year][filing_status]
