@@ -41,59 +41,13 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.taxable_income_before_dependents_and_exmptions = [f.taxable_income + f.long_term_capital_gains for f in federal_income_handlers]
         self.long_term_capital_gains = [0 for _ in federal_income_handlers]
 
-        if self.tax_year == 2024:
-            # TODO: Fix this deduction logic
-            self.deduction = 3700 * state_data.get('exemptions')
-            deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
-            self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
+        self.income_tax_brackets = self._get_tax_brackets(tax_year, filing_status, GeorgiaStateIncomeTaxBrackets.brackets)
+        self.long_term_capital_gains_tax_brackets = self._get_tax_brackets(tax_year, filing_status, GeorgiaStateLongTermCapitalGainsTaxBrackets.brackets)
 
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2024_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2024_tax
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2024_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_separately_2024_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.single_filer_2024_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.single_filer_2024_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
-        elif self.tax_year == 2023: 
-            # TODO: Fix this deduction logic
-            self.deduction = 3700 * state_data.get('exemptions')
-            deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
-            self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
-
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2023_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2023_tax # Doesn't need to be used, LTCG are zero
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2023_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_separately_2023_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.single_filer_2023_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.single_filer_2023_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")  
-        elif self.tax_year == 2022:
-            # TODO: Fix this deduction logic
-            self.deduction = 3700 * state_data.get('exemptions')
-            deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
-            self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
-
-            if self.filing_status == MARRIED_FILING_JOINTLY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_jointly_2022_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_jointly_2022_tax
-            elif self.filing_status == MARRIED_FILING_SEPARATELY:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.married_filing_separately_2022_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.married_filing_separately_2022_tax
-            elif self.filing_status == SINGLE:
-                self.income_tax_brackets = GeorgiaStateIncomeTaxBrackets.single_filer_2022_tax
-                self.long_term_capital_gains_tax_brackets = GeorgiaStateLongTermCapitalGainsTaxBrackets.single_filer_2022_tax
-            else:
-                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
-        else:
-            raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        # TODO: Fix this deduction logic
+        self.deduction = 3700 * state_data.get('exemptions')
+        deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
+        self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
         
         return
     
