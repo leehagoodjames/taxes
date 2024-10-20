@@ -1,7 +1,8 @@
 # Local Imports
 from . import FlatTaxBracket
+from .Tax import Tax
 
-class FlatTax:
+class FlatTax(Tax):
 
     def __init__(self, flat_tax_bracket: FlatTaxBracket):
         """Create a FlatTax object.

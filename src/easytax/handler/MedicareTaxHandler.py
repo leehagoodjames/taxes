@@ -22,14 +22,7 @@ class MedicareIndividualIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
         # Medicare taxes are only on salaries and wages.
         self.taxable_incomes = [f.salaries_and_wages for f in federal_income_handlers]
         self.tax_name = "Medicare"
-        self.income_tax_brackets = self._get_tax_brackets(tax_year)
+        self.income_tax_brackets = self._get_tax_brackets(tax_year, MedicareIncomeTaxBrackets.brackets)
         
         return
-    
-    @staticmethod
-    def _get_tax_brackets(tax_year: int):
-        if tax_year not in MedicareIncomeTaxBrackets.brackets:
-            raise ValueError(f"Unsupported tax year: {tax_year}")
-        
-        return MedicareIncomeTaxBrackets.brackets[tax_year]
     

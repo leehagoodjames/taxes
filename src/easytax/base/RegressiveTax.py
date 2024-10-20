@@ -1,7 +1,9 @@
 # Local Imports
 from . import RegressiveTaxBracket
+from .Tax import Tax
 
-class RegressiveTax:
+
+class RegressiveTax(Tax):
 
     def __init__(self, regressive_tax_bracket: RegressiveTaxBracket):
         """Create a RegressiveTax object.

@@ -1,6 +1,7 @@
 
 # Local Imports
 from ..utils.Logger import logger
+from ..base.Tax import Tax
 
 
 # Each handler can have its own AGI / MAGI
@@ -24,6 +25,14 @@ class IndividualIncomeTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionM
     taxable_incomes = None
     income_tax_brackets = None
     tax_name = None
+
+    @staticmethod
+    def _get_tax_brackets(tax_year: int, brackets: dict[int, Tax]):
+        if tax_year not in brackets:
+            raise ValueError(f"Unsupported tax year: {tax_year}")
+        
+        return brackets[tax_year]
+
 
     def check_required_attributes(self):
         if self.taxable_incomes is None:
