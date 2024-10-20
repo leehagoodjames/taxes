@@ -28,27 +28,8 @@ class NetInvestmentIncomeTaxHandler(IndividualIncomeTaxHandlerBase):
 
         self.tax_year = tax_year
         self.filing_status = filing_status
-        # self.total_incomes = [f.total_income for f in federal_income_handlers]
-        # self.taxable_incomes = [f.taxable_income for f in federal_income_handlers]
         self.taxable_incomes = [f.niit_income for f in federal_income_handlers]
-        # self.long_term_capital_gains = [f.long_term_capital_gains for f in federal_income_handlers]
         self.tax_name = "NetInvestmentIncome"
-
-        # self.threshold_amount = self._get_tax_brackets(tax_year, filing_status)
-
-        # # If the taxpayer is married filing jointly, head of household, or single, their incomes are combined
-        # if self.filing_status in {MARRIED_FILING_JOINTLY, HEAD_OF_HOUSEHOLD, SINGLE}:
-        #     self.taxable_incomes = [sum(self.taxable_incomes)]
-        #     self.niit_income = [sum(self.niit_income)]
-
-        # if self.taxable_incomes[0] > self.threshold_amount:
-        #     # Subtract the threshold amount from the taxable income
-        #     self.taxable_incomes[0] = self.taxable_incomes[0] - self.threshold_amount
-
-        #     # Choose the lesser of the taxable income or NIIT
-        #     self.taxable_incomes[0] = min(self.taxable_incomes[0], self.threshold_amount)
-        # else:
-        #     self.taxable_incomes[0] = 0
 
         self.income_tax_brackets = self._get_tax_brackets(tax_year, filing_status)
         
