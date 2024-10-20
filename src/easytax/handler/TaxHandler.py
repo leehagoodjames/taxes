@@ -6,7 +6,7 @@ from ..utils.InputValidator import InputValidator
 from ..income.FederalIncomeHandler import FederalIncomeHandler
 from ..income.PayrollTaxIncomeHandler import PayrollTaxIncomeHandler
 from .FederalTaxHandler import FederalTaxHandler
-from .GeorgiaTaxHandler import GeorgiaTaxHandler
+from .states.GeorgiaTaxHandler import GeorgiaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
 from .StateWithoutTaxHandler import StateWithoutTaxHandler

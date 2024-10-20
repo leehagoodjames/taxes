@@ -2,7 +2,7 @@
 import unittest
 
 # Local Imports
-from src.easytax.handler import GeorgiaTaxHandler
+from src.easytax.handler.states import GeorgiaTaxHandler
 from src.easytax.utils.Constants import *
 from tests.utils.TestContants import *
 from src.easytax.utils.InputValidator import InputValidator

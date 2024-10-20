@@ -1,11 +1,11 @@
 
 # Local Imports
-from ..brackets import GeorgiaStateIncomeTaxBrackets
-from ..brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
-from . import RegionalTaxHandlerBase
-from ..utils.InputValidator import InputValidator
-from ..income.FederalIncomeHandler import FederalIncomeHandler
-from ..utils.Constants import *
+from ...brackets import GeorgiaStateIncomeTaxBrackets
+from ...brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
+from .. import RegionalTaxHandlerBase
+from ...utils.InputValidator import InputValidator
+from ...income.FederalIncomeHandler import FederalIncomeHandler
+from ...utils.Constants import *
 
 
 # Each handler can have its own AGI / MAGI

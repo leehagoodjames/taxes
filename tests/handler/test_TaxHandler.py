@@ -4,7 +4,6 @@ import unittest
 # Local Imports
 from src.easytax.handler import TaxHandler
 from src.easytax.utils.Constants import *
-from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
 from tests.utils.TestContants import *
 from src.easytax.utils.InputValidator import InputValidator
 
