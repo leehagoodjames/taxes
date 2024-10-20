@@ -1,9 +1,9 @@
 # Local Imports
-from ..base.ProgressiveTax import ProgressiveTax
-from ..base.ProgressiveTaxBracket import ProgressiveTaxBracket
-from ..base.FlatTax import FlatTax
-from ..base.FlatTaxBracket import FlatTaxBracket
-from ..utils.Constants import *
+from ...base.ProgressiveTax import ProgressiveTax
+from ...base.ProgressiveTaxBracket import ProgressiveTaxBracket
+from ...base.FlatTax import FlatTax
+from ...base.FlatTaxBracket import FlatTaxBracket
+from ...utils.Constants import *
 
 
 brackets = {
