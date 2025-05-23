@@ -34,6 +34,28 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.long_term_capital_gains, [0])
 
 
+    def test_init_success_state_data_none(self):
+        taxHandler = handler_builder(state_data=None)
+        
+        self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
+        self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
+        self.assertEqual(taxHandler.taxable_incomes, [
+            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1 +  
+            SUPPORTED_SALARY_AND_WAGES_2 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2]) # Georgia considers LTCG income.
+        self.assertEqual(taxHandler.long_term_capital_gains, [0])
+
+
+    def test_init_success_state_data_empty(self):
+        taxHandler = handler_builder(state_data={})
+        
+        self.assertEqual(taxHandler.tax_year, SUPPORTED_TAX_YEAR)
+        self.assertEqual(taxHandler.filing_status, SUPPORTED_FILING_STATUS)
+        self.assertEqual(taxHandler.taxable_incomes, [
+            SUPPORTED_SALARY_AND_WAGES_1 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_1 +  
+            SUPPORTED_SALARY_AND_WAGES_2 + SUPPORTED_LONG_TERM_CAPITAL_GAINS_2]) # Georgia considers LTCG income.
+        self.assertEqual(taxHandler.long_term_capital_gains, [0])
+
+
     def test_init_failure_unsupported_tax_year(self):
         unsupported_tax_year = 2020
 
@@ -51,26 +73,6 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
             _ = handler_builder(filing_status=unsupported_filing_status)
 
         expected_message = f"filing_status must be in SUPPORTED_FILING_STATUSES: {InputValidator.alphabetize_set(SUPPORTED_FILING_STATUSES)}, got: {unsupported_filing_status}"
-        self.assertEqual(str(cm.exception), expected_message)
-
-
-    def test_init_failure_unsupported_state_data_none(self):
-        unsupported_state_data = None # Must contain 'exemptions'
-
-        with self.assertRaises(ValueError) as cm:
-            _ = handler_builder(state_data=unsupported_state_data)
-
-        expected_message = f"invalid value for 'state_data': {unsupported_state_data}"
-        self.assertEqual(str(cm.exception), expected_message)
-
-
-    def test_init_failure_unsupported_state_data_empty(self):
-        unsupported_state_data = {} # Must contain 'exemptions'
-
-        with self.assertRaises(ValueError) as cm:
-            _ = handler_builder(state_data=unsupported_state_data)
-
-        expected_message = f"state_data specified invalid value for 'exemptions': None"
         self.assertEqual(str(cm.exception), expected_message)
 
 

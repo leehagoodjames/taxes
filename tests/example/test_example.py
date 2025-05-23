@@ -14,47 +14,25 @@ class TestExample(unittest.TestCase):
         # Load in tax brackets for your year and filing-status.
         taxHandler = TaxHandler.TaxHandler(
             tax_year = 2024,
-            filing_status = "Married_Filing_Jointly",
-            state = "Georgia",
+            filing_status = 'Married_Filing_Jointly',
+            state = 'Georgia',
             incomes_adjustments_and_deductions = [
                 {
                     # Income
-                    'salaries_and_wages': 274605.63 + 21960,
-                    # 'taxable_pensions': 0, # 401k distributions,
-                    # 'long_term_capital_gains': 100000,
-                    'interest_income': 1020,
+                    'salaries_and_wages': 200000,
+                    'taxable_pensions': 0, # 401k distributions,
+                    'long_term_capital_gains': 100000,
 
                     # Adjustments
-                    # 'other_adjustments': 2000,
+                    'other_adjustments': 2000,
 
                     # Deductions
                     'use_standard_deduction': False,
-                    'taxes_paid': 5000,
-                    'interest_paid': 12499.42 + 543.29,
-                    'charitable_contributions': 23639,
-                    'capital_gain_or_loss': -1542,
-                },
-                {
-                    # Income
-                    'salaries_and_wages': 23611 + 14179,
-                    # 'taxable_pensions': 0, # 401k distributions,
-                    # 'long_term_capital_gains': 100000,
-                    'interest_income': 0,
-
-                    # Adjustments
-                    # 'other_adjustments': 2000,
-
-                    # Deductions
-                    'use_standard_deduction': False,
-                    'taxes_paid': 5000,
-                    'interest_paid': 0,
-                    'charitable_contributions':516 + (626 + 1250 + 81.76),
-                    'capital_gain_or_loss': 0,
+                    'taxes_paid': 10000,
+                    'interest_paid': 15000,
+                    'charitable_contributions':20000,
                 }
             ],
-            state_data={
-                'exemptions': 2
-            },
         )
 
         taxHandler.calculate_taxes()

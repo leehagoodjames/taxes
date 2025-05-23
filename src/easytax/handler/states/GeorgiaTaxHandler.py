@@ -10,7 +10,7 @@ from ...utils.Constants import *
 
 # Each handler can have its own AGI / MAGI
 class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
-    def __init__(self, tax_year: int, filing_status: str, federal_income_handlers: list[FederalIncomeHandler], state_data: dict):
+    def __init__(self, tax_year: int, filing_status: str, federal_income_handlers: list[FederalIncomeHandler], state_data: dict | None):
         """Create a GeorgiaTaxHandler object.
 
         Keyword arguments:
@@ -26,16 +26,9 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         InputValidator.validate_tax_year(tax_year)
         InputValidator.validate_filing_status(filing_status)
         
-        if state_data is None:
-            raise ValueError(f"invalid value for 'state_data': {state_data}")
-        if state_data.get('exemptions') is None:
-            raise ValueError(f"state_data specified invalid value for 'exemptions': {state_data.get('exemptions')}")
-        if type(state_data.get('exemptions')) is not int:
-            raise TypeError(f"state_data specified invalid type for 'exemptions': {type(state_data.get('exemptions'))}")
-        
         self.tax_year = tax_year
         self.filing_status = filing_status
-        self.region = "Georgia"
+        self.region = GEORGIA
 
         # The state of Georgia treats long term capital gains as taxable income
         self.taxable_income_before_dependents_and_exmptions = [f.taxable_income + f.long_term_capital_gains for f in federal_income_handlers]
@@ -44,8 +37,19 @@ class GeorgiaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         self.income_tax_brackets = self._get_tax_brackets(tax_year, filing_status, GeorgiaStateIncomeTaxBrackets.brackets)
         self.long_term_capital_gains_tax_brackets = self._get_tax_brackets(tax_year, filing_status, GeorgiaStateLongTermCapitalGainsTaxBrackets.brackets)
 
-        # TODO: Fix this deduction logic
-        self.deduction = 3700 * state_data.get('exemptions')
+        # The Georiga personal exemption deduction of $3,700 per person was removed in 2024. 
+        if self.tax_year < 2024:
+            if state_data is None:
+                self.deduction = 0
+            elif state_data.get('exemptions') is None:
+                self.deduction = 0
+            elif type(state_data.get('exemptions')) is not int:
+                raise TypeError(f"state_data specified invalid type for 'exemptions': {type(state_data.get('exemptions'))}")
+            else:
+                self.deduction = 3700 * state_data.get('exemptions', 0)
+        else:
+            self.deduction = 0
+
         deduction_per_income = self.deduction / len(self.taxable_income_before_dependents_and_exmptions)
         self.taxable_incomes = [i - deduction_per_income for i in self.taxable_income_before_dependents_and_exmptions]
         

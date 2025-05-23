@@ -32,13 +32,13 @@ class RegionalTaxHandlerBase(metaclass=ForceRequiredAttributeDefinitionMeta):
     long_term_capital_gains_tax_brackets = None
     region = None
 
-    @staticmethod
-    def _get_tax_brackets(tax_year: int, filing_status: str, brackets: dict[int, dict[str, Tax]]):
+
+    def _get_tax_brackets(self, tax_year: int, filing_status: str, brackets: dict[int, dict[str, Tax]]):
         if tax_year not in brackets:
-            raise ValueError(f"Unsupported tax year: {tax_year}")
+            raise ValueError(f"Unsupported tax year: {tax_year} for region: {self.region}")
         
         if filing_status not in brackets[tax_year]:
-            raise ValueError(f"Unsupported combination of status: {filing_status}, year {tax_year}")
+            raise ValueError(f"Unsupported combination of status: {filing_status}, year {tax_year}, region: {self.region}")
         
         return brackets[tax_year][filing_status]
 

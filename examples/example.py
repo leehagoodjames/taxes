@@ -6,7 +6,7 @@ from easytax.handler import TaxHandler
 
 # Load in tax brackets for your year and filing-status.
 taxHandler = TaxHandler.TaxHandler(
-    tax_year = 2022,
+    tax_year = 2024,
     filing_status = 'Married_Filing_Jointly',
     state = 'Georgia',
     incomes_adjustments_and_deductions = [
@@ -26,10 +26,7 @@ taxHandler = TaxHandler.TaxHandler(
             'charitable_contributions':20000,
         }
     ],
-    state_data={
-        'exemptions': 2
-    },
-    )
+)
 
 taxHandler.calculate_taxes()
 taxHandler.display_tax_summary()
