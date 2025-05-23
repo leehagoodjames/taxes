@@ -1,7 +1,7 @@
 
 # Local Imports
-from ...brackets import GeorgiaStateIncomeTaxBrackets
-from ...brackets import GeorgiaStateLongTermCapitalGainsTaxBrackets
+from ...brackets.states import GeorgiaStateIncomeTaxBrackets
+from ...brackets.states import GeorgiaStateLongTermCapitalGainsTaxBrackets
 from .. import RegionalTaxHandlerBase
 from ...utils.InputValidator import InputValidator
 from ...income.FederalIncomeHandler import FederalIncomeHandler

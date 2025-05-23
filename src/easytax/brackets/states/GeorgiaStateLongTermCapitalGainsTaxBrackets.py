@@ -1,6 +1,6 @@
 # Local Imports
-from ..brackets import GeorgiaStateIncomeTaxBrackets
-from ..utils.Constants import *
+from ...brackets.states import GeorgiaStateIncomeTaxBrackets
+from ...utils.Constants import *
 
 
 # Georgia Taxes Long Term Capital games as Income.
