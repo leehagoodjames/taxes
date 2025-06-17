@@ -47,4 +47,24 @@ class CaliforniaTaxHandler(RegionalTaxHandlerBase.RegionalTaxHandlerBase):
         total_credits = self.tax_credits.calculate_total_credits(self.taxable_incomes)
         self.income_tax_owed = [max(0, tax - credits) for tax, credits in zip(self.income_tax_owed, total_credits)]
         
+        # Apply Mental Health Services Act (MHSA) 1% tax on income over $1 million
+        self._apply_mental_health_services_tax()
+        
         return
+    
+    def _apply_mental_health_services_tax(self):
+        """
+        Apply California Mental Health Services Act (MHSA) tax.
+        
+        The MHSA adds an additional 1% tax on taxable income over $1 million.
+        This tax was passed by the California Legislature in 2013.
+        
+        Reference: https://www.dhcs.ca.gov/services/MH/Pages/MH_Prop63.aspx
+        """
+        mhsa_threshold = 1000000  # $1 million
+        mhsa_rate = 0.01  # 1%
+        
+        for i, taxable_income in enumerate(self.taxable_incomes):
+            if taxable_income > mhsa_threshold:
+                mhsa_tax = (taxable_income - mhsa_threshold) * mhsa_rate
+                self.income_tax_owed[i] += mhsa_tax
