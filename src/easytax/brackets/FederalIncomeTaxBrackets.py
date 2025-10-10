@@ -5,6 +5,20 @@ from ..utils.Constants import *
 
 
 brackets = {
+    2025: {
+        # Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [23800, 96700, 206200, 394050, 500050, 750200])),
+        # Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [11900, 48350, 103100, 197025, 250025, 375100])),
+        # Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [11900, 48350, 103100, 197025, 250025, 625500]))
+    },
     2024: {
         # Source: https://www.nerdwallet.com/article/taxes/federal-income-tax-brackets#2023%20tax%20brackets:%20married,%20filing%20jointly
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(

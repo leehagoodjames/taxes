@@ -9,6 +9,11 @@ from ..base.ProgressiveTaxBracket import ProgressiveTaxBracket
 # https://www.irs.gov/taxtopics/tc751
 
 brackets = {
+    2025: ProgressiveTax(
+        ProgressiveTaxBracket(
+        tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])
+        ),
     2024: ProgressiveTax(
         ProgressiveTaxBracket(
         tax_rates = [0.0145, 0.0235],

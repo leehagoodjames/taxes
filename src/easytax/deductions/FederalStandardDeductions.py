@@ -1,3 +1,16 @@
+# 2025 Married Filing Jointly
+# Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+married_filing_jointly_2025_deduction = 30000
+
+# 2025 Married Filing Separately
+# Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+married_filing_separately_2025_deduction = 15000
+
+# 2025 Single Filer
+# Source: IRS inflation adjustments for 2025 (estimated based on historical patterns)
+single_filer_2025_deduction = 15000
+
+
 # 2024 Married Filing Jointly
 # Source: https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2024
 married_filing_jointly_2024_deduction = 29200

@@ -5,6 +5,12 @@ class CaliforniaStandardDeductions:
     
     # California standard deduction amounts
     STANDARD_DEDUCTIONS = {
+        2025: {
+            SINGLE: 5700,
+            MARRIED_FILING_JOINTLY: 11400,
+            MARRIED_FILING_SEPARATELY: 5700,
+            HEAD_OF_HOUSEHOLD: 11400
+        },
         2024: {
             SINGLE: 5540,
             MARRIED_FILING_JOINTLY: 11080,
