@@ -104,7 +104,25 @@ class FederalIncomeHandler:
         self.miscellaneous_expenses = miscellaneous_expenses
 
         # Set standard Deduction
-        if self.tax_year == 2024:
+        if self.tax_year == 2026:
+            if self.filing_status == MARRIED_FILING_JOINTLY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2026_deduction
+            elif self.filing_status == MARRIED_FILING_SEPARATELY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_separately_2026_deduction
+            elif self.filing_status == SINGLE:
+                self.standard_deduction = FederalStandardDeductions.single_filer_2026_deduction
+            else:
+                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        elif self.tax_year == 2025:
+            if self.filing_status == MARRIED_FILING_JOINTLY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2025_deduction
+            elif self.filing_status == MARRIED_FILING_SEPARATELY:
+                self.standard_deduction = FederalStandardDeductions.married_filing_separately_2025_deduction
+            elif self.filing_status == SINGLE:
+                self.standard_deduction = FederalStandardDeductions.single_filer_2025_deduction
+            else:
+                raise ValueError(f"Unsupported combination of status: {self.filing_status}, year {self.tax_year}")
+        elif self.tax_year == 2024:
             if self.filing_status == MARRIED_FILING_JOINTLY:
                 self.standard_deduction = FederalStandardDeductions.married_filing_jointly_2024_deduction
             elif self.filing_status == MARRIED_FILING_SEPARATELY:
