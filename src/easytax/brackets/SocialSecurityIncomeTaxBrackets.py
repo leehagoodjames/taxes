@@ -4,6 +4,12 @@ from ..base import RegressiveTaxBracket
 
 
 brackets = {
+    # Source: https://payroll.org/news-resources/news/news-detail/2024/10/10/social-security-wage-base-increases-to-$176-100-for-2025
+    2025: RegressiveTax.RegressiveTax(
+        RegressiveTaxBracket.RegressiveTaxBracket(
+            tax_rates = [0.062, 0.0],
+            income_thresholds = [176100])
+    ),
     # Source: https://www.ssa.gov/news/press/factsheets/colafacts2024.pdf
     2024: RegressiveTax.RegressiveTax(
     RegressiveTaxBracket.RegressiveTaxBracket(

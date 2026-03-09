@@ -48,7 +48,18 @@ class CaliforniaStateTaxCredits:
     def _calculate_cal_eitc(self, taxable_income: float) -> float:
         """Calculate California Earned Income Tax Credit."""
         # CalEITC income limits and credit amounts
-        if self.tax_year == 2024:
+        if self.tax_year == 2025:
+            if self.filing_status in [SINGLE, MARRIED_FILING_SEPARATELY, HEAD_OF_HOUSEHOLD]:
+                if taxable_income <= 7000:
+                    return min(255, taxable_income * 0.085)
+                elif taxable_income <= 25220:
+                    return max(0, 255 - (taxable_income - 7000) * 0.0596)
+            elif self.filing_status == MARRIED_FILING_JOINTLY:
+                if taxable_income <= 7000:
+                    return min(255, taxable_income * 0.085)
+                elif taxable_income <= 31220:
+                    return max(0, 255 - (taxable_income - 7000) * 0.0596)
+        elif self.tax_year == 2024:
             if self.filing_status in [SINGLE, MARRIED_FILING_SEPARATELY, HEAD_OF_HOUSEHOLD]:
                 if taxable_income <= 7000:
                     return min(255, taxable_income * 0.085)
@@ -89,7 +100,9 @@ class CaliforniaStateTaxCredits:
         dependents = self.state_data.get('dependents', 0)
         
         # California dependent exemption
-        if self.tax_year == 2024:
+        if self.tax_year == 2025:
+            return dependents * 158
+        elif self.tax_year == 2024:
             return dependents * 154
         elif self.tax_year == 2023:
             return dependents * 151

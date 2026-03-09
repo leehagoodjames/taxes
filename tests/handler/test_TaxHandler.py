@@ -71,12 +71,29 @@ class TestTaxHandler(unittest.TestCase):
         taxHandler = tax_handler_builder()
         taxHandler.calculate_taxes()
         
-        self.assertEqual(taxHandler.federal_tax_owed, [46800]) # 34,800
-        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [15000]) # All at 15% bracket
-        self.assertEqual(taxHandler.state_tax_owed, [19890]) # ?
-        self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0]) # ?
-        self.assertEqual(taxHandler.social_security_tax_owed, [9300, 6200]) # ?
-        self.assertEqual(taxHandler.medicare_tax_owed, [2175, 1450]) # ?
+        self.assertEqual(taxHandler.federal_tax_owed, [46800])  # 2023 brackets
+        self.assertEqual(taxHandler.federal_long_term_capital_gains_tax_owed, [15000])  # All at 15% bracket
+        self.assertEqual(taxHandler.state_tax_owed, [19890])
+        self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0])
+        self.assertEqual(taxHandler.social_security_tax_owed, [9300, 6200])
+        self.assertEqual(taxHandler.medicare_tax_owed, [2175, 1450])
+
+    def test_2025_calculate_taxes_georgia(self):
+        """Verify full TaxHandler 2025 calculation with Georgia."""
+        taxHandler = tax_handler_builder(
+            tax_year=2025,
+            incomes=[
+                {
+                    "salaries_and_wages": 350000,
+                    "long_term_capital_gains": 100000,
+                    "use_standard_deduction": False,
+                },
+            ],
+        )
+        taxHandler.calculate_taxes()
+        # State: GA 5.39% on 450k = 24,255
+        self.assertEqual(taxHandler.state_tax_owed, [24255])
+        self.assertEqual(taxHandler.state_long_term_capital_gains_tax_owed, [0])
 
 
     def test_calculate_taxes_married_filling_separately(self):

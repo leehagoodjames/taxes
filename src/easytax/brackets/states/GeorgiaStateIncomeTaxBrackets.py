@@ -7,6 +7,12 @@ from ...utils.Constants import *
 
 
 brackets = {
+    2025: {
+        # Source: https://www.taxformcalculator.com/georgia/tax-tables/2025.html
+        MARRIED_FILING_JOINTLY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        MARRIED_FILING_SEPARATELY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        SINGLE: FlatTax(FlatTaxBracket(tax_rate = 0.0539))
+    },
     2024: {
         # Source: https://gov.georgia.gov/press-releases/2024-04-18/gov-kemp-signs-historic-tax-cut-package-law
         MARRIED_FILING_JOINTLY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),

@@ -10,6 +10,21 @@ from ...utils.Constants import *
 
 
 brackets = {
+    # Source: https://www.nerdwallet.com/taxes/learn/california-state-tax
+    2025: {
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [22158, 52528, 82904, 115084, 145448, 742958, 891542, 1485906]
+        )),
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
+        )),
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
+        ))
+    },
     # https://www.nerdwallet.com/article/taxes/california-state-tax
     2024: {
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(

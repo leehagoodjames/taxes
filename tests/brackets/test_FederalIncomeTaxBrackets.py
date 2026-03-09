@@ -7,6 +7,20 @@ from src.easytax.brackets.FederalIncomeTaxBrackets import *
 
 class TestFederalincomeTaxBracket(unittest.TestCase):
 
+    def test_2025_single_tax_correctness(self):
+        """Verify 2025 Single brackets per NerdWallet/IRS."""
+        # $50,000: 10% on $11,925 + 12% on $36,550 + 22% on $1,525 = $1,192.50 + $4,386 + $335.50 = $5,914
+        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(0), 0)
+        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(11925), 1192.5)
+        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(50000), 5914)
+
+    def test_2025_married_filing_jointly_tax_correctness(self):
+        """Verify 2025 MFJ brackets per NerdWallet/IRS."""
+        # $250,000: 10% + 12% + 22% + 24% on remainder
+        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(0), 0)
+        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(23850), 2385)
+        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(250000), 45694)
+
     def test_married_filing_jointly_2023_tax(self):
         self.assertEqual(brackets[2023][MARRIED_FILING_JOINTLY].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2023][MARRIED_FILING_JOINTLY].calculate_taxes(0), 0)

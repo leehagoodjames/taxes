@@ -43,6 +43,30 @@ class TestCaliforniaTaxHandler(unittest.TestCase):
         self.assertIsNotNone(taxHandler.income_tax_owed)
         self.assertEqual(taxHandler.long_term_capital_gains_tax_owed[0], 0)
 
+    def test_2025_calculate_taxes_correctness(self):
+        """Verify 2025 California brackets and standard deduction ($11,412 MFJ)."""
+        from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+        # 450k income - 11,412 CA deduction = 438,588 taxable. Per CA 2025 MFJ schedule.
+        handler = CaliforniaTaxHandler.CaliforniaTaxHandler(
+            tax_year=2025,
+            filing_status=MARRIED_FILING_JOINTLY,
+            federal_income_handlers=[
+                FederalIncomeHandler(
+                    filing_status=MARRIED_FILING_JOINTLY,
+                    tax_year=2025,
+                    salaries_and_wages=450000,
+                    long_term_capital_gains=0,
+                    use_standard_deduction=False,
+                ),
+            ],
+            state_data=SUPPORTED_STATE_DATA,
+        )
+        handler.calculate_taxes()
+        # CA 2025 MFJ: 9.3% bracket for 438,588. Tax = 6403.94 + 0.093*(438588-145448) = 6403.94 + 27262 = 33666
+        expected_tax = 6403.94 + 0.093 * (438588 - 145448)
+        self.assertAlmostEqual(handler.income_tax_owed[0], expected_tax, places=0)
+        self.assertEqual(handler.long_term_capital_gains_tax_owed[0], 0)
+
     def test_mental_health_services_tax(self):
         # Test the additional 1% tax on income over $1 million
         high_income_handler = CaliforniaTaxHandler.CaliforniaTaxHandler(

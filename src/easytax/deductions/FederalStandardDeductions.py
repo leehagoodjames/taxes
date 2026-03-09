@@ -1,3 +1,16 @@
+# 2025 Married Filing Jointly
+# Source: https://www.nerdwallet.com/taxes/learn/standard-deduction
+married_filing_jointly_2025_deduction = 31500
+
+# 2025 Married Filing Separately
+# Source: https://www.nerdwallet.com/taxes/learn/standard-deduction
+married_filing_separately_2025_deduction = 15750
+
+# 2025 Single Filer
+# Source: https://www.nerdwallet.com/taxes/learn/standard-deduction
+single_filer_2025_deduction = 15750
+
+
 # 2024 Married Filing Jointly
 # Source: https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2024
 married_filing_jointly_2024_deduction = 29200
