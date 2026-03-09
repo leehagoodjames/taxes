@@ -6,6 +6,7 @@ from ..income.FederalIncomeHandler import FederalIncomeHandler
 from ..income.PayrollTaxIncomeHandler import PayrollTaxIncomeHandler
 from .FederalTaxHandler import FederalTaxHandler
 from .states.GeorgiaTaxHandler import GeorgiaTaxHandler
+from .states.CaliforniaTaxHandler import CaliforniaTaxHandler
 from .SocialSecurityTaxHandler import SocialSecurityIndividualIncomeTaxHandler
 from .MedicareTaxHandler import MedicareIndividualIncomeTaxHandler
 from .StateWithoutTaxHandler import StateWithoutTaxHandler
@@ -42,6 +43,13 @@ class TaxHandler:
 
         if self.state == "Georgia":
             self.stateTaxHandler = GeorgiaTaxHandler(
+            tax_year=tax_year, 
+            filing_status=filing_status, 
+            federal_income_handlers=self.federal_income_handlers,
+            state_data = state_data,
+        )
+        elif self.state == "California":
+            self.stateTaxHandler = CaliforniaTaxHandler(
             tax_year=tax_year, 
             filing_status=filing_status, 
             federal_income_handlers=self.federal_income_handlers,

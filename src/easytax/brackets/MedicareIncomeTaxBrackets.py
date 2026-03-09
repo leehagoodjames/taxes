@@ -9,6 +9,16 @@ from ..base.ProgressiveTaxBracket import ProgressiveTaxBracket
 # https://www.irs.gov/taxtopics/tc751
 
 brackets = {
+    2026: ProgressiveTax(
+        ProgressiveTaxBracket(
+            tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])  # Additional Medicare tax threshold typically unchanged
+        ),
+    2025: ProgressiveTax(
+        ProgressiveTaxBracket(
+            tax_rates = [0.0145, 0.0235],
+            income_thresholds = [200000])  # Additional Medicare tax threshold typically unchanged
+        ),
     2024: ProgressiveTax(
         ProgressiveTaxBracket(
         tax_rates = [0.0145, 0.0235],

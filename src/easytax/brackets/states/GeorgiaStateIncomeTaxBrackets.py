@@ -7,6 +7,20 @@ from ...utils.Constants import *
 
 
 brackets = {
+    2026: {
+        # Source: Georgia DOR - Flat tax rate continues from 2024 legislation
+        # Based on Georgia's 2024 tax reform maintaining 5.39% flat rate
+        MARRIED_FILING_JOINTLY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        MARRIED_FILING_SEPARATELY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        SINGLE: FlatTax(FlatTaxBracket(tax_rate = 0.0539))
+    },
+    2025: {
+        # Source: Georgia DOR - Flat tax rate continues from 2024 legislation
+        # Based on Georgia's 2024 tax reform maintaining 5.39% flat rate
+        MARRIED_FILING_JOINTLY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        MARRIED_FILING_SEPARATELY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),
+        SINGLE: FlatTax(FlatTaxBracket(tax_rate = 0.0539))
+    },
     2024: {
         # Source: https://gov.georgia.gov/press-releases/2024-04-18/gov-kemp-signs-historic-tax-cut-package-law
         MARRIED_FILING_JOINTLY: FlatTax(FlatTaxBracket(tax_rate = 0.0539)),

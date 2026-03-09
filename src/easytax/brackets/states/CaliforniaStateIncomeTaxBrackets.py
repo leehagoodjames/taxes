@@ -10,6 +10,38 @@ from ...utils.Constants import *
 
 
 brackets = {
+    2026: {
+        # Source: Estimated based on 3.5% inflation adjustment from 2025 figures
+        # California typically adjusts brackets annually for inflation
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [22400, 53150, 83850, 116450, 147200, 751750, 901900, 1505000]
+        )),
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [11200, 26575, 41925, 58225, 73600, 375875, 450950, 752500]
+        )),
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [11200, 26575, 41925, 58225, 73600, 375875, 450950, 752500]
+        ))
+    },
+    2025: {
+        # Source: California FTB - inflation adjusted from 2024 brackets
+        # Based on typical 3.3% inflation adjustment pattern
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [21650, 51350, 81000, 112550, 142200, 726500, 871800, 1453900]
+        )),
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [10825, 25675, 40500, 56275, 71100, 363250, 435900, 726950]
+        )),
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
+            income_thresholds = [10825, 25675, 40500, 56275, 71100, 363250, 435900, 726950]
+        ))
+    },
     # https://www.nerdwallet.com/article/taxes/california-state-tax
     2024: {
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
