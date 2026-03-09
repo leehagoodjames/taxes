@@ -5,6 +5,34 @@ from ..utils.Constants import *
 
 
 brackets = {
+    2026: {
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [24800, 100800, 211400, 403550, 512450, 768700])),
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [12400, 50400, 105700, 201775, 256225, 384350])),
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [12400, 50400, 105700, 201775, 256225, 640600]))
+    },
+    2025: {
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [23850, 96950, 206700, 394600, 501050, 751600])),
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [11925, 48475, 103350, 197300, 250525, 375800])),
+        # Source: https://www.nerdwallet.com/taxes/learn/federal-income-tax-brackets
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0.1, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37],
+            income_thresholds = [11925, 48475, 103350, 197300, 250525, 626350]))
+    },
     2024: {
         # Source: https://www.nerdwallet.com/article/taxes/federal-income-tax-brackets#2023%20tax%20brackets:%20married,%20filing%20jointly
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(

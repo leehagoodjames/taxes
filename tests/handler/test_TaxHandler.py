@@ -36,6 +36,25 @@ class TestTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.state, SUPPORTED_STATE)
         self.assertEqual(taxHandler.federal_income_handlers, SUPPORTED_FEDERAL_INCOME_HANDLERS)
 
+    def test_init_success_2025(self):
+        taxHandler = tax_handler_builder(tax_year=2025)
+        self.assertEqual(taxHandler.tax_year, 2025)
+        self.assertIsNotNone(taxHandler.federal_income_handlers)
+
+    def test_init_success_2026(self):
+        taxHandler = tax_handler_builder(tax_year=2026)
+        self.assertEqual(taxHandler.tax_year, 2026)
+        self.assertIsNotNone(taxHandler.federal_income_handlers)
+
+    def test_calculate_taxes_2025(self):
+        taxHandler = tax_handler_builder(tax_year=2025)
+        taxHandler.calculate_taxes()
+        self.assertGreater(taxHandler.total_tax, 0)
+
+    def test_calculate_taxes_2026(self):
+        taxHandler = tax_handler_builder(tax_year=2026)
+        taxHandler.calculate_taxes()
+        self.assertGreater(taxHandler.total_tax, 0)
 
     def test_init_failure_unsupported_tax_year(self):
         tax_year = 2020 # Unsupported year

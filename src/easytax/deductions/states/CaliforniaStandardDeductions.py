@@ -5,6 +5,20 @@ class CaliforniaStandardDeductions:
     
     # California standard deduction amounts
     STANDARD_DEDUCTIONS = {
+        2026: {
+            # Source: Projected ~2.2% inflation from 2025 (FTB 2026 not yet published)
+            SINGLE: 5832,
+            MARRIED_FILING_JOINTLY: 11664,
+            MARRIED_FILING_SEPARATELY: 5832,
+            HEAD_OF_HOUSEHOLD: 11664
+        },
+        2025: {
+            # Source: https://www.nerdwallet.com/taxes/learn/california-state-tax
+            SINGLE: 5706,
+            MARRIED_FILING_JOINTLY: 11412,
+            MARRIED_FILING_SEPARATELY: 5706,
+            HEAD_OF_HOUSEHOLD: 11412
+        },
         2024: {
             SINGLE: 5540,
             MARRIED_FILING_JOINTLY: 11080,
