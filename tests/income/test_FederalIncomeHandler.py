@@ -116,9 +116,18 @@ class TestFederalIncomeHandler(unittest.TestCase):
             charitable_contributions=SUPPORTED_CHARITABLE_CONTRIBUTIONS,
             use_standard_deduction=True,
         )
-        self.assertEqual(federalIncomeHandler.deduction_taken, 27700) # Standard deduction
+        self.assertEqual(federalIncomeHandler.deduction_taken, 27700)  # 2023 Standard deduction
         self.assertEqual(federalIncomeHandler.total_income, SUPPORTED_SALARY_AND_WAGES_1)
         self.assertEqual(federalIncomeHandler.taxable_income, SUPPORTED_SALARY_AND_WAGES_1 - 27700)
+
+    def test_2025_standard_deduction(self):
+        """Verify 2025 standard deduction amounts per NerdWallet."""
+        handler = federal_income_handler_builder(tax_year=2025, use_standard_deduction=True)
+        self.assertEqual(handler.standard_deduction, 31500)  # MFJ 2025
+        single_handler = federal_income_handler_builder(
+            tax_year=2025, filing_status=SINGLE, use_standard_deduction=True
+        )
+        self.assertEqual(single_handler.standard_deduction, 15750)  # Single 2025
 
         
     def test_itemized_deduction(self):

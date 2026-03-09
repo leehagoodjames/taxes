@@ -5,6 +5,18 @@ from ..utils.Constants import *
 
 
 brackets = {
+    2025: {
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
+        MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0, 0.15, 0.2],
+            income_thresholds = [96700, 600050])),
+        MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0, 0.15, 0.2],
+            income_thresholds = [48350, 300000])),
+        SINGLE: ProgressiveTax(ProgressiveTaxBracket(
+            tax_rates = [0, 0.15, 0.2],
+            income_thresholds = [48350, 533400]))
+    },
     2024: {
         # Source: https://www.nerdwallet.com/article/taxes/capital-gains-tax-rates#2024%20capital%20gains%20tax%20rates
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
