@@ -11,33 +11,33 @@ from ...utils.Constants import *
 
 brackets = {
     2026: {
-        # Source: Projected based on 3% inflation adjustment from 2025 brackets
+        # Source: https://www.ftb.ca.gov/forms/ - same brackets as 2025 (no inflation adjustment published)
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [22078, 52345, 82578, 114576, 144913, 739669, 887450, 1479019]
+            income_thresholds = [22158, 52528, 82904, 115084, 145448, 742958, 891542, 1485906]
         )),
         MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [11039, 26172, 41289, 57288, 72456, 369834, 443725, 739509]
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
         )),
         SINGLE: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [11039, 26172, 41289, 57288, 72456, 369834, 443725, 739509]
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
         ))
     },
     2025: {
-        # Source: Projected based on 3% inflation adjustment from 2024 brackets
+        # Source: https://www.nerdwallet.com/taxes/learn/california-state-tax (FTB 2025-540)
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [21449, 50849, 80256, 111327, 140761, 718224, 863060, 1436438]
+            income_thresholds = [22158, 52528, 82904, 115084, 145448, 742958, 891542, 1485906]
         )),
         MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [10724, 25424, 40128, 55663, 70381, 359412, 431530, 719219]
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
         )),
         SINGLE: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0.01, 0.02, 0.04, 0.06, 0.08, 0.093, 0.103, 0.113, 0.123],
-            income_thresholds = [10724, 25424, 40128, 55663, 70381, 359412, 431530, 719219]
+            income_thresholds = [11079, 26264, 41452, 57542, 72724, 371479, 445771, 742953]
         ))
     },
     # https://www.nerdwallet.com/article/taxes/california-state-tax

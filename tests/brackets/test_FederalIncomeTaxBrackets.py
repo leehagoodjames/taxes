@@ -11,43 +11,43 @@ class TestFederalincomeTaxBracket(unittest.TestCase):
         self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(0), 0)
         self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(100 * 1000), 11530.76)
-        self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(500 * 1000), 112801.1)
+        self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(100 * 1000), 11504)
+        self.assertEqual(brackets[2026][MARRIED_FILING_JOINTLY].calculate_taxes(500 * 1000), 112912)
 
     def test_married_filing_separately_2026_tax(self):
         self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(0), 0)
         self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(100 * 1000), 16765.32)
-        self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(500 * 1000), 145929.07)
+        self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(100 * 1000), 16712)
+        self.assertEqual(brackets[2026][MARRIED_FILING_SEPARATELY].calculate_taxes(500 * 1000), 146082.25)
 
     def test_single_2026_tax(self):
         self.assertEqual(brackets[2026][SINGLE].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2026][SINGLE].calculate_taxes(0), 0)
         self.assertEqual(brackets[2026][SINGLE].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2026][SINGLE].calculate_taxes(100 * 1000), 16765.32)
-        self.assertEqual(brackets[2026][SINGLE].calculate_taxes(500 * 1000), 143665.43)
+        self.assertEqual(brackets[2026][SINGLE].calculate_taxes(100 * 1000), 16712)
+        self.assertEqual(brackets[2026][SINGLE].calculate_taxes(500 * 1000), 143769.25)
 
     def test_married_filing_jointly_2025_tax(self):
         self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(0), 0)
         self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(100 * 1000), 11827.0)
-        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(500 * 1000), 114128.0)
+        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(100 * 1000), 11828)
+        self.assertEqual(brackets[2025][MARRIED_FILING_JOINTLY].calculate_taxes(500 * 1000), 114126)
 
     def test_married_filing_separately_2025_tax(self):
         self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(0), 0)
         self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(100 * 1000), 16913.5)
-        self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(500 * 1000), 147032.25)
+        self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(100 * 1000), 16914)
+        self.assertEqual(brackets[2025][MARRIED_FILING_SEPARATELY].calculate_taxes(500 * 1000), 147031.25)
 
     def test_single_2025_tax(self):
         self.assertEqual(brackets[2025][SINGLE].calculate_taxes(-100), 0)
         self.assertEqual(brackets[2025][SINGLE].calculate_taxes(0), 0)
         self.assertEqual(brackets[2025][SINGLE].calculate_taxes(100), 10)
-        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(100 * 1000), 16913.5)
-        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(500 * 1000), 144548.25)
+        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(100 * 1000), 16914)
+        self.assertEqual(brackets[2025][SINGLE].calculate_taxes(500 * 1000), 144547.25)
 
     def test_married_filing_jointly_2023_tax(self):
         self.assertEqual(brackets[2023][MARRIED_FILING_JOINTLY].calculate_taxes(-100), 0)

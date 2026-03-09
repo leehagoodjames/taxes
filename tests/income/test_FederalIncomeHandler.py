@@ -120,6 +120,34 @@ class TestFederalIncomeHandler(unittest.TestCase):
         self.assertEqual(federalIncomeHandler.total_income, SUPPORTED_SALARY_AND_WAGES_1)
         self.assertEqual(federalIncomeHandler.taxable_income, SUPPORTED_SALARY_AND_WAGES_1 - 27700)
 
+    def test_standard_deduction_2025(self):
+        """Verify 2025 standard deduction amounts from NerdWallet/IRS."""
+        for status, expected in [
+            (MARRIED_FILING_JOINTLY, 31500),
+            (MARRIED_FILING_SEPARATELY, 15750),
+            (SINGLE, 15750),
+        ]:
+            handler = federal_income_handler_builder(
+                filing_status=status,
+                tax_year=2025,
+                use_standard_deduction=True,
+            )
+            self.assertEqual(handler.standard_deduction, expected, f"2025 {status}")
+
+    def test_standard_deduction_2026(self):
+        """Verify 2026 standard deduction amounts from NerdWallet/IRS."""
+        for status, expected in [
+            (MARRIED_FILING_JOINTLY, 32200),
+            (MARRIED_FILING_SEPARATELY, 16100),
+            (SINGLE, 16100),
+        ]:
+            handler = federal_income_handler_builder(
+                filing_status=status,
+                tax_year=2026,
+                use_standard_deduction=True,
+            )
+            self.assertEqual(handler.standard_deduction, expected, f"2026 {status}")
+
         
     def test_itemized_deduction(self):
         federalIncomeHandler = federal_income_handler_builder(

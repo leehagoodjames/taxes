@@ -6,29 +6,29 @@ from ..utils.Constants import *
 
 brackets = {
     2026: {
-        # Source: Projected based on 3% inflation adjustment from 2025 brackets
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
-            income_thresholds = [99473, 617459])),
-        # Source: Projected based on 3% inflation adjustment from 2025 brackets
+            income_thresholds = [98900, 613700])),
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
-            income_thresholds = [49736, 308729])),
-        # Source: Projected based on 3% inflation adjustment from 2025 brackets
+            income_thresholds = [49450, 306850])),
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         SINGLE: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
-            income_thresholds = [49736, 549237]))
+            income_thresholds = [49450, 545500]))
     },
     2025: {
-        # Source: https://www.irs.gov/newsroom/irs-announces-2025-tax-year-inflation-adjustments
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         MARRIED_FILING_JOINTLY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
             income_thresholds = [96700, 600050])),
-        # Source: https://www.irs.gov/newsroom/irs-announces-2025-tax-year-inflation-adjustments
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         MARRIED_FILING_SEPARATELY: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
-            income_thresholds = [48350, 300025])),
-        # Source: https://www.irs.gov/newsroom/irs-announces-2025-tax-year-inflation-adjustments
+            income_thresholds = [48350, 300000])),
+        # Source: https://www.nerdwallet.com/taxes/learn/capital-gains-tax-rates
         SINGLE: ProgressiveTax(ProgressiveTaxBracket(
             tax_rates = [0, 0.15, 0.2],
             income_thresholds = [48350, 533400]))

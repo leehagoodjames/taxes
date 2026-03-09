@@ -43,6 +43,48 @@ class TestCaliforniaTaxHandler(unittest.TestCase):
         self.assertIsNotNone(taxHandler.income_tax_owed)
         self.assertEqual(taxHandler.long_term_capital_gains_tax_owed[0], 0)
 
+    def test_california_standard_deduction_2025(self):
+        """Verify California 2025 standard deduction: $5,706 single, $11,412 MFJ."""
+        from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+        for status, expected_deduction in [(SINGLE, 5706), (MARRIED_FILING_JOINTLY, 11412)]:
+            handler = CaliforniaTaxHandler.CaliforniaTaxHandler(
+                tax_year=2025,
+                filing_status=status,
+                federal_income_handlers=[
+                    FederalIncomeHandler(
+                        filing_status=status,
+                        tax_year=2025,
+                        salaries_and_wages=100000,
+                        long_term_capital_gains=0,
+                        use_standard_deduction=False,
+                    ),
+                ],
+                state_data=SUPPORTED_STATE_DATA,
+            )
+            self.assertEqual(handler.standard_deduction, expected_deduction, f"2025 {status}")
+
+    def test_california_tax_2025(self):
+        """Verify California 2025 tax calculation with known bracket."""
+        from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+        handler = CaliforniaTaxHandler.CaliforniaTaxHandler(
+            tax_year=2025,
+            filing_status=SINGLE,
+            federal_income_handlers=[
+                FederalIncomeHandler(
+                    filing_status=SINGLE,
+                    tax_year=2025,
+                    salaries_and_wages=50000,
+                    long_term_capital_gains=0,
+                    use_standard_deduction=False,
+                ),
+            ],
+            state_data=SUPPORTED_STATE_DATA,
+        )
+        handler.calculate_taxes()
+        # CA taxable = 50000 - 5706 = 44294. Per FTB 2025 schedule: 1% on 11079 + 2% on 15185 + 4% on 12830 + ...
+        self.assertGreater(handler.income_tax_owed[0], 0)
+        self.assertLess(handler.income_tax_owed[0], 3000)
+
     def test_mental_health_services_tax(self):
         # Test the additional 1% tax on income over $1 million
         high_income_handler = CaliforniaTaxHandler.CaliforniaTaxHandler(

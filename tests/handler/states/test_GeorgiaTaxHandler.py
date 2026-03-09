@@ -93,6 +93,48 @@ class TestGeorgiaTaxHandler(unittest.TestCase):
         self.assertEqual(taxHandler.income_tax_owed, [19890])
         self.assertEqual(taxHandler.long_term_capital_gains_tax_owed, [0]) # Georgia considers LTCG income.
 
+    def test_georgia_flat_tax_rate_2025(self):
+        """Verify Georgia 2025 flat tax rate of 5.19%."""
+        from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+        handler = GeorgiaTaxHandler.GeorgiaTaxHandler(
+            tax_year=2025,
+            filing_status=MARRIED_FILING_JOINTLY,
+            federal_income_handlers=[
+                FederalIncomeHandler(
+                    filing_status=MARRIED_FILING_JOINTLY,
+                    tax_year=2025,
+                    salaries_and_wages=100000,
+                    long_term_capital_gains=0,
+                    use_standard_deduction=False,
+                ),
+            ],
+            state_data=SUPPORTED_STATE_DATA,
+        )
+        handler.calculate_taxes()
+        # 100000 * 5.19% = 5190
+        self.assertEqual(handler.income_tax_owed, [5190])
+
+    def test_georgia_flat_tax_rate_2026(self):
+        """Verify Georgia 2026 flat tax rate of 5.29%."""
+        from src.easytax.income.FederalIncomeHandler import FederalIncomeHandler
+        handler = GeorgiaTaxHandler.GeorgiaTaxHandler(
+            tax_year=2026,
+            filing_status=MARRIED_FILING_JOINTLY,
+            federal_income_handlers=[
+                FederalIncomeHandler(
+                    filing_status=MARRIED_FILING_JOINTLY,
+                    tax_year=2026,
+                    salaries_and_wages=100000,
+                    long_term_capital_gains=0,
+                    use_standard_deduction=False,
+                ),
+            ],
+            state_data=SUPPORTED_STATE_DATA,
+        )
+        handler.calculate_taxes()
+        # 100000 * 5.29% = 5290
+        self.assertEqual(handler.income_tax_owed, [5290])
+
 
     def test_display_tax_summary_success(self):
 
